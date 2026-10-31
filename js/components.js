@@ -23,13 +23,21 @@ const KP = (function () {
     '<path d="M4 12L12 4M12 4H5.5M12 4v6.5" stroke="currentColor" ' +
     'stroke-width="1.3" stroke-linecap="square"/></svg>';
 
+  /* Las copias de imagenes/web/ tienen otra a la mitad de ancho */
+  function srcsetAttr(src, sizes) {
+    const m = /^(.*)-(\d+)\.webp$/.exec(src);
+    if (!m) return "";
+    return ' srcset="' + esc(m[1] + "-" + m[2] / 2 + ".webp " + m[2] / 2 + "w, " + src + " " + m[2] + "w") + '" ' +
+      'sizes="' + esc(sizes || "100vw") + '"';
+  }
+
   /* ---------------------------------------------------- Media
      Imagen real si existe; si no, placeholder editorial. */
   function media(opt) {
     const ratio = esc(opt.ratio || "3 / 2");
     const label = esc(opt.label || "[IMAGEN]");
     const inner = opt.image
-      ? '<img src="' + esc(opt.image) + '" alt="' + esc(opt.alt || "") + '" ' +
+      ? '<img src="' + esc(opt.image) + '"' + srcsetAttr(opt.image, opt.sizes) + ' alt="' + esc(opt.alt || "") + '" ' +
         'loading="' + (opt.eager ? "eager" : "lazy") + '" decoding="async">'
       : '<div class="media__ph"><span class="media__ph-label">' + label + "</span></div>";
 
@@ -49,7 +57,7 @@ const KP = (function () {
     const tiles = series.items.map(function (item) {
       return (
         '<figure class="photo-tile" data-reveal>' +
-          media({ image: item.image, alt: item.alt, ratio: series.ratio }) +
+          media({ image: item.image, alt: item.alt, ratio: series.ratio, sizes: "(max-width: 900px) 50vw, 20vw" }) +
         "</figure>"
       );
     }).join("");
@@ -90,7 +98,7 @@ const KP = (function () {
           "</div>" +
           '<a class="game-card__screen" href="' + esc(item.href) + '" ' +
             'aria-label="Jugar ' + esc(item.title) + '">' +
-            media({ image: item.image, alt: item.alt, ratio: "16 / 9" }) +
+            media({ image: item.image, alt: item.alt, ratio: "16 / 9", sizes: "(max-width: 900px) 100vw, 33vw" }) +
             '<span class="game-card__play" aria-hidden="true">Jugar ' + arrowSVG + "</span>" +
           "</a>" +
         "</div>" +
@@ -239,7 +247,7 @@ const KP = (function () {
      lleva su --i para flotar desfasado de los demás. */
   function toolLayer(image, alt, attrs) {
     return (
-      '<img ' + (attrs || 'class="tools__layer"') + ' src="' + esc(image) + '" ' +
+      '<img ' + (attrs || 'class="tools__layer"') + ' src="' + esc(image) + '"' + srcsetAttr(image) + ' ' +
       'alt="' + esc(alt) + '" width="1920" height="1080" loading="lazy" decoding="async">'
     );
   }

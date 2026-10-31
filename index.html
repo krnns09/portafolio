@@ -12,7 +12,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
+
+  <link rel="preload" as="image" href="imagenes/web/ke1-960.webp" fetchpriority="high"
+        imagesrcset="imagenes/web/ke1-960.webp 960w, imagenes/web/ke1-1920.webp 1920w" imagesizes="100vw">
 
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
@@ -74,13 +78,13 @@
 
       <!-- Las 3 imágenes (1920×1080) ya vienen alineadas: comparten la misma caja -->
       <div class="hero__stage">
-        <img class="hero__layer" src="Recursos/ke1.jpg" alt="" width="1920" height="1080"
+        <img class="hero__layer" src="imagenes/web/ke1-960.webp" srcset="imagenes/web/ke1-960.webp 960w, imagenes/web/ke1-1920.webp 1920w" sizes="100vw" alt="" width="1920" height="1080"
              fetchpriority="high" decoding="async">
         <h1 class="hero__layer hero__title" id="hero-title">
-          <img src="Recursos/ke2.png" alt="KePro" width="1920" height="1080"
+          <img src="imagenes/web/ke2-960.webp" srcset="imagenes/web/ke2-960.webp 960w, imagenes/web/ke2-1920.webp 1920w" sizes="100vw" alt="KePro" width="1920" height="1080"
                fetchpriority="high" decoding="async">
         </h1>
-        <img class="hero__layer" src="Recursos/ke3.png" alt="" width="1920" height="1080"
+        <img class="hero__layer" src="imagenes/web/ke3-960.webp" srcset="imagenes/web/ke3-960.webp 960w, imagenes/web/ke3-1920.webp 1920w" sizes="100vw" alt="" width="1920" height="1080"
              fetchpriority="high" decoding="async">
       </div>
 

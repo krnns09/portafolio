@@ -46,7 +46,7 @@ const KEPRO = {
 
   /* ------------------------------------------- 01 — Portada */
   hero: {
-    /* La portada son las 3 imágenes de Recursos/ (ke1, ke2, ke3, en index.html).
+    /* La portada son las 3 capas ke1, ke2 y ke3 (en index.html).
        Lo único que se genera desde aquí es la franja de disciplinas. */
     strip: [
       "Dirección visual",
@@ -64,20 +64,20 @@ const KEPRO = {
   /* ---------------------------------------- 02 — Herramientas */
   tools: {
     /* Capas 1920×1080 ya alineadas: se apilan en este orden, sin redimensionar. */
-    background: "Recursos/fondo1.jpg",
+    background: "imagenes/web/fondo1-1920.webp",
     figure: {
-      image: "Recursos/gafas.png",
+      image: "imagenes/web/gafas-1920.webp",
       alt: "Persona con gafas de realidad virtual y un mando en la mano"
     },
     items: [
-      { image: "Recursos/higgsfield.png",  alt: "Higgsfield"  },
-      { image: "Recursos/claude.png",      alt: "Claude"      },
-      { image: "Recursos/antigravity.png", alt: "Antigravity" },
-      { image: "Recursos/obs.png",         alt: "OBS Studio"  },
-      { image: "Recursos/blender.png",     alt: "Blender"     },
-      { image: "Recursos/capcut.png",      alt: "CapCut"      },
-      { image: "Recursos/illustrator.png", alt: "Illustrator" },
-      { image: "Recursos/photoshop.png",   alt: "Photoshop"   }
+      { image: "imagenes/web/higgsfield-1920.webp",  alt: "Higgsfield"  },
+      { image: "imagenes/web/claude-1920.webp",      alt: "Claude"      },
+      { image: "imagenes/web/antigravity-1920.webp", alt: "Antigravity" },
+      { image: "imagenes/web/obs-1920.webp",         alt: "OBS Studio"  },
+      { image: "imagenes/web/blender-1920.webp",     alt: "Blender"     },
+      { image: "imagenes/web/capcut-1920.webp",      alt: "CapCut"      },
+      { image: "imagenes/web/illustrator-1920.webp", alt: "Illustrator" },
+      { image: "imagenes/web/photoshop-1920.webp",   alt: "Photoshop"   }
     ]
   },
 
@@ -91,33 +91,33 @@ const KEPRO = {
         title: "Quince años",
         ratio: "1087 / 1447",
         items: [
-          { image: "trabajos/fotografía/quince1.png", alt: "Quinceañera con vestido fucsia y dorado, de pie con un ramo" },
-          { image: "trabajos/fotografía/quince2.png", alt: "Arreglo de flores con una rosa, claveles blancos y flores lilas" },
-          { image: "trabajos/fotografía/quince3.png", alt: "Quinceañera sentada a la mesa, sonriendo con una copa" },
-          { image: "trabajos/fotografía/quince4.png", alt: "Tiara sobre un cojín fucsia con lazo dorado" },
-          { image: "trabajos/fotografía/quince5.png", alt: "Quinceañera de perfil soplando las velas" }
+          { image: "imagenes/web/quince1-800.webp", alt: "Quinceañera con vestido fucsia y dorado, de pie con un ramo" },
+          { image: "imagenes/web/quince2-800.webp", alt: "Arreglo de flores con una rosa, claveles blancos y flores lilas" },
+          { image: "imagenes/web/quince3-800.webp", alt: "Quinceañera sentada a la mesa, sonriendo con una copa" },
+          { image: "imagenes/web/quince4-800.webp", alt: "Tiara sobre un cojín fucsia con lazo dorado" },
+          { image: "imagenes/web/quince5-800.webp", alt: "Quinceañera de perfil soplando las velas" }
         ]
       },
       {
         title: "Podcast",
         ratio: "2 / 3",
         items: [
-          { image: "trabajos/fotografía/podcast1.png", alt: "Consola de audio iluminada junto a un portátil" },
-          { image: "trabajos/fotografía/podcast2.png", alt: "Cámara en trípode grabando a los dos invitados del podcast" },
-          { image: "trabajos/fotografía/podcast3.png", alt: "Pantalla con el logo de La Verda' del Abogado, un vaso y un micrófono" },
-          { image: "trabajos/fotografía/podcast4.png", alt: "Dos invitados conversando frente a sus micrófonos" },
-          { image: "trabajos/fotografía/podcast5.png", alt: "Invitado con gorra blanca y gafas oscuras hablando al micrófono" }
+          { image: "imagenes/web/podcast1-800.webp", alt: "Consola de audio iluminada junto a un portátil" },
+          { image: "imagenes/web/podcast2-800.webp", alt: "Cámara en trípode grabando a los dos invitados del podcast" },
+          { image: "imagenes/web/podcast3-800.webp", alt: "Pantalla con el logo de La Verda' del Abogado, un vaso y un micrófono" },
+          { image: "imagenes/web/podcast4-800.webp", alt: "Dos invitados conversando frente a sus micrófonos" },
+          { image: "imagenes/web/podcast5-800.webp", alt: "Invitado con gorra blanca y gafas oscuras hablando al micrófono" }
         ]
       },
       {
         title: "BMX",
         ratio: "2 / 3",
         items: [
-          { image: "trabajos/fotografía/bmx1.png", alt: "Rider de BMX con casco blanco saltando en una rampa, de noche" },
-          { image: "trabajos/fotografía/bmx2.jpg", alt: "Rider de BMX en el aire sobre el barandal del skatepark" },
-          { image: "trabajos/fotografía/bmx3.png", alt: "Rider de BMX con camiseta a rayas girando la bicicleta en el aire" },
-          { image: "trabajos/fotografía/bmx4.jpg", alt: "Rider de BMX saltando sobre la rampa frente a los árboles" },
-          { image: "trabajos/fotografía/bmx5.jpg", alt: "Rider de BMX con casco negro en el aire sobre el público" }
+          { image: "imagenes/web/bmx1-800.webp", alt: "Rider de BMX con casco blanco saltando en una rampa, de noche" },
+          { image: "imagenes/web/bmx2-800.webp", alt: "Rider de BMX en el aire sobre el barandal del skatepark" },
+          { image: "imagenes/web/bmx3-800.webp", alt: "Rider de BMX con camiseta a rayas girando la bicicleta en el aire" },
+          { image: "imagenes/web/bmx4-800.webp", alt: "Rider de BMX saltando sobre la rampa frente a los árboles" },
+          { image: "imagenes/web/bmx5-800.webp", alt: "Rider de BMX con casco negro en el aire sobre el público" }
         ]
       }
     ]
@@ -168,7 +168,7 @@ const KEPRO = {
       { k: "Disponible",   v: "Proyectos y colaboraciones" }
     ],
     /* Los juegos necesitan servidor: abiertos con doble clic el navegador
-       bloquea sus scripts. Portadas en imagenes/juegos/. */
+       bloquea sus scripts. Portadas en imagenes/web/. */
     games: [
       {
         id: "gm-01",
@@ -180,7 +180,7 @@ const KEPRO = {
           "transportes con suministros al otro lado del río antes de que los cazas de " +
           "Ostrel los intercepten.",
         tools: ["TypeScript", "Three.js", "Vite"],
-        image: "imagenes/juegos/ashwing.jpg",
+        image: "imagenes/web/ashwing-800.webp",
         alt: "Avión en la pista de un aeródromo al atardecer, con el logo de Ashwing",
         href: "ashwing/dist/index.html"
       },
@@ -193,7 +193,7 @@ const KEPRO = {
           "CIRCUIT: siete partidos en directo bajo el mando de THE COMMISSIONER, " +
           "presidente, árbitro y dueño de todo. Ellos solo venían a jugar al fútbol.",
         tools: ["TypeScript", "Canvas 2D", "Three.js"],
-        image: "imagenes/juegos/neon-league.jpg",
+        image: "imagenes/web/neon-league-800.webp",
         alt: "Pantalla de título de Neon League con una cuadrícula neón y un sol retro",
         href: "futbolito/dist/index.html"
       },
@@ -206,7 +206,7 @@ const KEPRO = {
           "baja sin parar y, si llega a cero, te solidificas en roca volcánica: la única " +
           "salida es derretir la casa mueble a mueble mientras llegan más oleadas.",
         tools: ["Three.js", "Vite"],
-        image: "imagenes/juegos/nucleo-fundido.jpg",
+        image: "imagenes/web/nucleo-fundido-800.webp",
         alt: "Vista en primera persona de unas manos de magma frente a un bombero en una casa",
         href: "Juego3D/dist/index.html"
       }
@@ -258,7 +258,7 @@ const KEPRO = {
       "Si tienes un proyecto que mezcle imagen, tecnología y una buena historia, " +
       "escríbeme. Trabajo tanto la producción visual como la construcción digital.",
     profile: {
-      image: "Recursos/perfil.png",
+      image: "imagenes/web/perfil-400.webp",
       alt: "Foto de perfil",
       handle: "@krnn_s9",
       links: [
