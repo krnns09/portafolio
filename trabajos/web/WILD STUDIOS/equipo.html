@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equipo - Wild Studios</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="scanline-overlay"></div>
+  <audio id="ui-beep" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+
+  <header class="navbar">
+    <div class="navbar__logo">
+      <img src="portada/isotipo.png" alt="Wild Isotipo" class="navbar__logo-img" />
+    </div>
+    <nav class="navbar__menu">
+      <a href="index.html" class="nav-link">Inicio</a>
+      <a href="servicios.html" class="nav-link">Servicios</a>
+      <a href="proyectos.html" class="nav-link">Proyectos</a>
+      <a href="equipo.html" class="nav-link nav-link--active">Equipo</a>
+      <a href="contacto.html" class="nav-link">Contactos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="equipo" class="section section--alt equipo-browser" style="margin-top: 0; padding-top: 4rem;">
+      <div class="section__header" style="margin-bottom: 1rem;">
+        <h2 class="section__title neon-text">4 PLAYERS AVAILABLE</h2>
+      </div>
+      <div class="browser-container">
+        <!-- Selector de personajes (Navegación superior) -->
+        <nav class="char-nav">
+          <button class="char-nav__btn is-active" data-char="angelo">ANGELO</button>
+          <button class="char-nav__btn" data-char="marlyn">MARLYN</button>
+          <button class="char-nav__btn" data-char="elkin">ELKIN</button>
+          <button class="char-nav__btn" data-char="keren">KEREN</button>
+        </nav>
+
+        <div class="char-display">
+          <!-- Lado Izquierdo: Información -->
+          <div class="char-info" id="char-info-panel">
+            <header class="char-info__header">
+              <h2 class="char-info__name neon-text" id="display-name">Angelo Hurtado Rincon</h2>
+              <p class="char-info__class" id="display-class">Clase: Programador de Sistemas</p>
+              <p class="char-info__role" id="display-role">Rol: Arquitecto del código</p>
+            </header>
+
+            <div class="char-info__body">
+              <div class="char-info__desc-box">
+                <p id="display-desc">Maestro del lenguaje de las máquinas y estratega digital. Angelo domina los motores de juego y construye la lógica que da vida a cada mecánica interactiva.</p>
+              </div>
+
+              <div class="char-info__details-grid">
+                <div class="char-info__skills-sect">
+                  <h4 class="sect-title">HABILIDADES</h4>
+                  <ul class="skills-list" id="display-skills">
+                    <li>Programación de mecánicas</li>
+                    <li>Resolución de bugs</li>
+                    <li>Integración de sistemas</li>
+                  </ul>
+                </div>
+
+                <div class="char-info__stats-sect">
+                  <h4 class="sect-title">STATISTICS</h4>
+                  <div class="stat-bars" id="display-stats">
+                    <div class="stat-row">
+                      <span>CÓDIGO</span>
+                      <div class="stat-bar"><div class="stat-fill" style="width: 95%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                      <span>DISEÑO</span>
+                      <div class="stat-bar"><div class="stat-fill" style="width: 40%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                      <span>NARRATIVA</span>
+                      <div class="stat-bar"><div class="stat-fill" style="width: 50%"></div></div>
+                    </div>
+                    <div class="stat-row">
+                      <span>ANIMACIÓN</span>
+                      <div class="stat-bar"><div class="stat-fill" style="width: 30%"></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="char-info__superpower" id="display-superpower-container">
+                <span class="super-tag">SUPERPOWER</span>
+                <p id="display-superpower">"Código Infinito – puede optimizar cualquier sistema hasta hacerlo funcionar con máxima eficiencia."</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lado Derecho: Imagen -->
+          <div class="char-visual">
+            <div class="char-visual__frame">
+              <img src="equipo/angelop.png" alt="Angelo Hurtado Rincon" class="char-visual__img" id="display-image">
+              <div class="char-visual__glow"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__text">
+      © <span id="year"></span> Wild Studios · Videojuegos Sociales desde Cúcuta, Colombia.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

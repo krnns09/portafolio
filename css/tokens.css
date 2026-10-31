@@ -1,0 +1,96 @@
+/* ============================================================
+   KePro — Design tokens
+   Único lugar donde se definen color, tipografía, ritmo y motion.
+   Cambia aquí y cambia toda la web.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* ---------- Color ---------- */
+  --bg:            #0A0A0A;
+  --bg-elev:       #0F0F0F;
+  --bg-soft:       #141414;
+  --bg-raise:      #191919;
+
+  --fg:            #F4F4F4;
+  --fg-dim:        #9B9B9B;
+  --fg-faint:      #616161;
+  --fg-ghost:      #2A2A2A;
+
+  --line:          rgba(255, 255, 255, 0.10);
+  --line-soft:     rgba(255, 255, 255, 0.06);
+  --line-strong:   rgba(255, 255, 255, 0.24);
+
+  /* Acento: rojo señal. Uso deliberadamente escaso. */
+  --accent:        #FF3B20;
+  --accent-hover:  #FF5638;
+  --accent-dim:    rgba(255, 59, 32, 0.55);
+  --accent-wash:   rgba(255, 59, 32, 0.12);
+  --accent-glow:   rgba(255, 59, 32, 0.30);
+
+  /* ---------- Tipografía ---------- */
+  --font-display: "Syne", "Space Grotesk", system-ui, sans-serif;
+  --font-sans:    "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Los máximos están calculados para que la palabra más larga de cada
+     titular quepa siempre en su columna. Si cambias los textos a palabras
+     más largas, baja el valor máximo. */
+  --fs-display:  clamp(3rem, 11vw, 12rem);
+  --fs-h2:       clamp(1.75rem, 5vw, 5.5rem);
+  --fs-h3:       clamp(1.5rem, 3.4vw, 2.75rem);
+  --fs-h4:       clamp(1.15rem, 1.8vw, 1.5rem);
+  --fs-lead:     clamp(1rem, 1.45vw, 1.25rem);
+  --fs-body:     clamp(0.95rem, 1.05vw, 1.0625rem);
+  --fs-sm:       0.8125rem;
+  --fs-xs:       0.6875rem;
+
+  --lh-tight:    0.86;
+  --lh-snug:     1.12;
+  --lh-body:     1.65;
+
+  --tracking-label: 0.22em;
+  --tracking-wide:  0.08em;
+  --tracking-tight: -0.03em;
+
+  /* ---------- Ritmo / layout ---------- */
+  --container:      1560px;
+  --gutter:         clamp(1.25rem, 4.5vw, 5rem);
+  --section-y:      clamp(6rem, 13vw, 13rem);
+  --rail-w:         84px;
+
+  --s-1:  0.25rem;
+  --s-2:  0.5rem;
+  --s-3:  0.75rem;
+  --s-4:  1rem;
+  --s-5:  1.5rem;
+  --s-6:  2rem;
+  --s-7:  3rem;
+  --s-8:  4rem;
+  --s-9:  6rem;
+  --s-10: 8rem;
+
+  --radius:    2px;
+  --radius-lg: 4px;
+
+  /* ---------- Motion ---------- */
+  --ease:      cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:  180ms;
+  --dur:       420ms;
+  --dur-slow:  900ms;
+
+  /* ---------- Capas ---------- */
+  --z-grain:   9000;
+  --z-nav:     900;   /* por encima del menú: el botón de cerrar debe verse */
+  --z-menu:    850;
+  --z-rail:    700;
+  --z-cursor:  600;
+}
+
+/* Densidad reducida en pantallas pequeñas */
+@media (max-width: 640px) {
+  :root {
+    --lh-tight: 0.92;
+  }
+}

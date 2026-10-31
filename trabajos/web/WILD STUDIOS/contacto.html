@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto - Wild Studios</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="scanline-overlay"></div>
+  <audio id="ui-beep" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+
+  <header class="navbar">
+    <div class="navbar__logo">
+      <img src="portada/isotipo.png" alt="Wild Isotipo" class="navbar__logo-img" />
+    </div>
+    <nav class="navbar__menu">
+      <a href="index.html" class="nav-link">Inicio</a>
+      <a href="servicios.html" class="nav-link">Servicios</a>
+      <a href="proyectos.html" class="nav-link">Proyectos</a>
+      <a href="equipo.html" class="nav-link">Equipo</a>
+      <a href="contacto.html" class="nav-link nav-link--active">Contactos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="contacto" class="section">
+      <div class="section__header">
+        <h2 class="section__title">Contactos</h2>
+        <p class="section__subtitle">
+          ¿Tienes una idea, un proyecto social o quieres colaborar desde Cúcuta o cualquier
+          parte del mundo?
+        </p>
+      </div>
+
+      <div class="contact-layout">
+        <form class="form" autocomplete="off">
+          <div class="form__group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+          </div>
+
+          <div class="form__group">
+            <label for="correo">Correo</label>
+            <input type="email" id="correo" name="correo" placeholder="tucorreo@email.com" required />
+          </div>
+
+          <div class="form__group">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="4" placeholder="Cuéntanos tu idea o proyecto..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn--primary neon-hover js-sound">
+            Enviar
+          </button>
+          <p class="form__hint">* El formulario es solo demostrativo en esta versión estática.</p>
+        </form>
+
+        <div class="contact-info">
+          <h3 class="contact-info__title">Estudio en Cúcuta</h3>
+          <p class="contact-info__text">
+            Cúcuta, Norte de Santander, Colombia<br />
+            Trabajo híbrido · Colaboraciones remotas
+          </p>
+
+          <h4 class="contact-info__subtitle">Redes sociales</h4>
+          <div class="social-links">
+            <a href="#" class="social-link js-sound">Instagram</a>
+            <a href="#" class="social-link js-sound">Twitter / X</a>
+            <a href="#" class="social-link js-sound">Itch.io</a>
+            <a href="#" class="social-link js-sound">LinkedIn</a>
+          </div>
+
+          <h4 class="contact-info__subtitle">Email directo</h4>
+          <a href="mailto:hola@wildstudios.co" class="contact-info__email js-sound">
+            hola@wildstudios.co
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__text">
+      © <span id="year"></span> Wild Studios · Videojuegos Sociales desde Cúcuta, Colombia.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

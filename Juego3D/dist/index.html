@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NÚCLEO FUNDIDO — Videojuego 3D FPS Volcánico</title>
+    <meta name="description" content="Videojuego 3D FPS de supervivencia volcánica. Tu cuerpo es tu munición y tu energía vital. Absorbe muebles para no solidificarte y combate a los bomberos.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <script defer src="./assets/index-C5C3ZkGE.js"></script>
+</head>
+<body>
+    <!-- Regreso al portafolio. Encima de todo: la ruta parte de dist/ -->
+    <a href="../../index.html#desarrollo" aria-label="Volver al portafolio" title="Volver al portafolio"
+       style="position:fixed;top:4px;left:4px;z-index:2147483647;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:rgba(10,10,10,.72);color:#f4f4f4">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+    </a>
+    <!-- Contenedor 3D WebGL -->
+    <div id="game-container"></div>
+
+    <!-- Viñeta de pantalla para efectos de frío o calor -->
+    <div id="vignette-overlay"></div>
+
+    <!-- Alerta de temperatura crítica -->
+    <div id="critical-alert" class="critical-banner">
+        <span>⚠️ ADVERTENCIA: TEMPERATURA CRÍTICA — ¡ABSORBE MUEBLES INMEDIATAMENTE! ⚠️</span>
+    </div>
+
+    <!-- RETÍCULA DE APUNTADO CENTRAL -->
+    <div id="crosshair" class="crosshair-center">
+        <div class="dot"></div>
+        <div class="ring"></div>
+    </div>
+
+    <!-- PANEL DE ABSORCIÓN DE OBJETOS (Centro inferior de la pantalla) -->
+    <div id="absorb-panel" class="absorb-card">
+        <div class="absorb-header">
+            <span id="absorb-name" class="obj-name">Mueble de Madera</span>
+            <span id="absorb-heat" class="heat-delta">+180 UT</span>
+        </div>
+        <div id="absorb-material" class="obj-mat">Material: Madera seca</div>
+        <div class="absorb-bar-container">
+            <div id="absorb-progress-bar" class="absorb-bar-fill"></div>
+        </div>
+        <div class="absorb-hint">[MANTÉN CLIC DERECHO PARA FUNDIR Y ABSORBER CALOR]</div>
+    </div>
+
+    <!-- INTERFAZ HUD PRINCIPAL -->
+    <div id="hud" class="hud-layer">
+        <!-- Panel Superior: Información de Oleada, Enemigos y Destrucción -->
+        <header class="hud-top">
+            <div class="hud-card wave-info">
+                <span class="hud-label">OLEADA ACTUAL</span>
+                <span id="wave-number" class="hud-value highlight">OLEADA 1</span>
+            </div>
+            <div class="hud-card enemies-info">
+                <span class="hud-label">BOMBEROS ACTIVOS</span>
+                <span id="enemies-count" class="hud-value danger-text">2 RESTANTES</span>
+            </div>
+            <div class="hud-card destruction-info">
+                <span class="hud-label">CASA DERRETIDA</span>
+                <span id="house-melted" class="hud-value">0%</span>
+            </div>
+        </header>
+
+        <!-- Banner Flotante de Notificaciones de Oleada -->
+        <div id="wave-banner" class="wave-banner-modal hidden">
+            <h2 id="wave-banner-title" class="banner-title">¡OLEADA 1 INICIADA!</h2>
+            <p id="wave-banner-subtitle" class="banner-subtitle">2 Bomberos detectados ingresando a la casa</p>
+        </div>
+
+        <!-- Panel Inferior Izquierdo: Núcleo Térmico Vital -->
+        <div class="hud-bottom-left">
+            <div class="thermo-card">
+                <div class="thermo-header">
+                    <span class="core-title">NÚCLEO TÉRMICO</span>
+                    <span id="temp-value" class="temp-readout">750 / 1000 UT</span>
+                </div>
+                <!-- Barra de Temperatura Dinámica -->
+                <div class="temp-bar-bg">
+                    <div id="temp-bar-fill" class="temp-bar-fill"></div>
+                    <div class="temp-marker marker-crit" title="Límite Crítico (200 UT)"></div>
+                    <div class="temp-marker marker-shotgun" title="Desbloqueo Escopeta (350 UT)"></div>
+                    <div class="temp-marker marker-erup" title="Desbloqueo Erupción (700 UT)"></div>
+                </div>
+                <div class="thermo-footer">
+                    <span id="temp-status" class="temp-state-text">ESTABLE</span>
+                    <span class="cooling-indicator">❄️ -8 UT/s (Enfriamiento pasivo)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Inferior Derecho: Arma Activa y Coste -->
+        <div class="hud-bottom-right">
+            <div class="weapon-card">
+                <span class="hud-label">SISTEMA DE ARMAS</span>
+                <div id="weapon-name" class="weapon-title">PISTOLA DE GOTEO</div>
+                <div id="weapon-cost" class="weapon-cost-badge">COSTE: -25 UT</div>
+                <div class="weapon-hint">Clic Izquierdo: Disparar magma</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE INICIO / PRESENTACIÓN -->
+    <div id="start-screen" class="modal-backdrop">
+        <div class="modal-card">
+            <h1 class="game-logo">NÚCLEO FUNDIDO</h1>
+            <p class="game-tagline">Eres un golem de magma en una casa invadida. Tu cuerpo es tu munición y tu energía vital.</p>
+            
+            <div class="instructions-grid">
+                <div class="inst-item">
+                    <span class="key-badge">W A S D</span>
+                    <span class="inst-desc">Moverse por las habitaciones</span>
+                </div>
+                <div class="inst-item">
+                    <span class="key-badge">RATÓN</span>
+                    <span class="inst-desc">Mirar alrededor</span>
+                </div>
+                <div class="inst-item">
+                    <span class="key-badge">ESPACIO</span>
+                    <span class="inst-desc">Saltar obstáculos</span>
+                </div>
+                <div class="inst-item">
+                    <span class="key-badge">SHIFT</span>
+                    <span class="inst-desc">Correr</span>
+                </div>
+                <div class="inst-item">
+                    <span class="key-badge">CLIC IZQ</span>
+                    <span class="inst-desc">Disparar Magma (gasta calor corporal)</span>
+                </div>
+                <div class="inst-item">
+                    <span class="key-badge">CLIC DER (Mantener)</span>
+                    <span class="inst-desc">Derretir y absorber muebles para recuperar calor</span>
+                </div>
+            </div>
+
+            <div class="mechanic-alert">
+                🔥 <strong>CUIDADO:</strong> Tu calor baja constantemente (-8 UT/s). Si llega a cero, te solidificarás. ¡Evita absorber neveras frías!
+            </div>
+
+            <button id="btn-start" class="btn-primary">INICIAR PARTIDA</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE PAUSA -->
+    <div id="pause-screen" class="modal-backdrop hidden">
+        <div class="modal-card mini">
+            <h2 class="modal-title">JUEGO EN PAUSA</h2>
+            <p>La temperatura se mantiene suspendida mientras estás en pausa.</p>
+            <button id="btn-resume" class="btn-primary">CONTINUAR</button>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE GAME OVER POR SOLIDIFICACIÓN -->
+    <div id="game-over-screen" class="modal-backdrop hidden">
+        <div class="modal-card game-over-card">
+            <div class="skull-icon">🧊</div>
+            <h2 class="game-over-title">TU NÚCLEO SE HA SOLIDIFICADO</h2>
+            <p class="game-over-desc">Tu temperatura corporal llegó a cero. Las llamas de tu cuerpo se apagaron y te has convertido en roca volcánica fría e inerte.</p>
+            <button id="btn-restart" class="btn-primary pulse-btn">REINICIAR NÚCLEO</button>
+        </div>
+    </div>
+
+</body>
+</html>

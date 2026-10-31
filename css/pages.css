@@ -1,0 +1,353 @@
+/* ============================================================
+   KePro — Páginas internas
+   Cabecera de página · Formulario (contacto.html)
+   Se carga DESPUÉS de components.css y reutiliza sus tokens y piezas.
+   ============================================================ */
+
+/* ============ Cabecera de página ============ */
+
+.page-head {
+  position: relative;
+  padding-block: clamp(8rem, 15vw, 12rem) clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+}
+
+/* El mismo halo de la portada, más contenido */
+.page-head::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(110vw, 1100px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-wash), transparent 60%);
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.page-head > .container { position: relative; z-index: 1; }
+
+.page-head__grid {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.page-head__grid > * { min-width: 0; }
+
+@media (min-width: 1000px) {
+  .page-head__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+    align-items: end;
+    column-gap: clamp(2rem, 5vw, 5rem);
+  }
+  .page-head__grid > .eyebrow { grid-column: 1 / -1; }
+}
+
+.page-head__title {
+  font-size: var(--fs-h2);
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+.page-head__title em {
+  font-style: normal;
+  -webkit-text-stroke: 1px var(--fg-faint);
+  color: transparent;
+}
+
+.page-head__lead {
+  max-width: 44ch;
+  color: var(--fg-dim);
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+}
+
+.page-head__lead strong { color: var(--fg); font-weight: 400; }
+
+/* Migas de pan */
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.crumbs a { transition: color var(--dur-fast) var(--ease); }
+.crumbs a:hover { color: var(--accent); }
+.crumbs [aria-current] { color: var(--fg-dim); }
+
+/* ============ Formulario (contacto.html) ============ */
+
+.form-section { padding-block: clamp(2rem, 4vw, 3rem) var(--section-y); }
+
+.form-grid {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.form-grid > * { min-width: 0; }
+
+@media (min-width: 1000px) {
+  .form-grid { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); }
+}
+
+/* ---- Columna lateral ---- */
+
+.form-aside {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  align-content: start;
+}
+
+.form-aside__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h4);
+  letter-spacing: -0.015em;
+}
+
+.form-aside__text {
+  color: var(--fg-dim);
+  font-size: var(--fs-sm);
+  line-height: 1.65;
+  max-width: 40ch;
+}
+
+.steps {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.step {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  background: var(--bg);
+}
+
+.step__n {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent);
+}
+
+.step__t {
+  font-size: var(--fs-sm);
+  color: var(--fg-dim);
+  line-height: 1.5;
+}
+
+/* ---- Formulario ---- */
+
+.form {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  padding: clamp(1.5rem, 3.5vw, 2.75rem);
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+}
+
+.form__row { display: grid; gap: 0.55rem; }
+
+@media (min-width: 720px) {
+  .form__cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+}
+
+.form__label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.form__req { color: var(--accent); }
+
+.form__field {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  font-size: var(--fs-body);
+  font-weight: 300;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease);
+}
+
+.form__field::placeholder { color: var(--fg-ghost); }
+
+.form__field:hover { border-color: var(--line-strong); }
+
+.form__field:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg-soft);
+}
+
+.form__field:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+textarea.form__field {
+  min-height: 9rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* La flecha del select, dibujada a mano para no depender del sistema */
+select.form__field {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.5rem;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--fg-dim) 50%),
+    linear-gradient(135deg, var(--fg-dim) 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.15rem) calc(50% + 1px),
+    calc(100% - 0.8rem) calc(50% + 1px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+select.form__field option { background: var(--bg-elev); color: var(--fg); }
+
+/* Estado de error */
+.form__field[aria-invalid="true"] { border-color: var(--accent); }
+
+.form__error {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--fs-sm);
+  color: var(--accent);
+}
+
+.form__error::before {
+  content: "!";
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  flex: none;
+  font-size: 0.65rem;
+  font-weight: 500;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.form__row.has-error .form__error { display: flex; }
+
+.form__hint { font-size: var(--fs-sm); color: var(--fg-faint); }
+
+.form__count {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-xs);
+  color: var(--fg-faint);
+  justify-self: end;
+}
+
+.form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-4);
+  padding-top: 0.5rem;
+}
+
+.form__note {
+  font-size: var(--fs-sm);
+  color: var(--fg-faint);
+  max-width: 46ch;
+}
+
+/* Resumen que aparece tras enviar */
+.summary {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(1.5rem, 3.5vw, 2.75rem);
+  border: 1px solid var(--accent-dim);
+  background: var(--bg-elev);
+  scroll-margin-top: 110px;
+}
+
+.summary__head { display: grid; gap: 0.5rem; }
+
+.summary__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-h4);
+  color: var(--fg);
+}
+
+.summary__lead {
+  color: var(--fg-dim);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+
+.summary__list { display: grid; }
+
+.summary__item {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+@media (min-width: 560px) {
+  .summary__item {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+  }
+}
+
+.summary__k {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.summary__v {
+  color: var(--fg);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* ============ Cierre compartido de las páginas internas ============ */
+
+.page-foot {
+  padding-block: clamp(4rem, 9vw, 8rem);
+  border-top: 1px solid var(--line-soft);
+  text-align: center;
+}
+
+.page-foot__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-bottom: clamp(1.25rem, 3vw, 2rem);
+}

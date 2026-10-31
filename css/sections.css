@@ -1,0 +1,681 @@
+/* ============================================================
+   KePro — Composición de cada capítulo
+   01 Portada · 02 Herramientas · 03 Edición y Fotografía · 04 Desarrollo · 05 IA · Contacto
+   ============================================================ */
+
+/* ============ 01 — PORTADA ============ */
+
+/* Paleta clara para lo que queda sobre el fondo gris de la portada.
+   La nav y el rail son fijos: vuelven a la paleta oscura al salir de ella. */
+.hero,
+body:has(.hero):not(:has(.menu.is-open)) .nav:not(.is-stuck),
+.rail:has([data-rail="portada"].is-active) {
+  --bg:          #EAEAEA;
+  --fg:          #0A0A0A;
+  --fg-dim:      #3D3D3D;
+  --fg-faint:    #5A5A5A;
+  --fg-ghost:    #8A8A8A;
+  --line:        rgba(0, 0, 0, 0.14);
+  --line-soft:   rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.30);
+  color: var(--fg);
+}
+
+/* En la portada el título es ke2.png: la marca de la nav sólo la duplicaría */
+body:has(.hero) .nav:not(.is-stuck) .brand,
+body:has([data-nav="portada"].is-active) .nav .brand {
+  visibility: hidden;
+}
+
+/* Portada: tres imágenes 16:9 apiladas, sin recortes. El fondo es el mismo
+   gris de ke1.jpg, así que el espacio sobrante no se nota. z-index: por
+   encima de .vignette, para que la foto se vea tal cual. */
+.hero {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding-block: 0;
+  overflow: hidden;
+  border-top: 0;
+  background: var(--bg);
+}
+
+.hero__stage,
+.tools__stage {
+  position: relative;
+  width: min(100%, calc(100svh * 16 / 9));
+  aspect-ratio: 16 / 9;
+}
+
+.hero__layer,
+.tools__layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Título: flota despacio y cada 4 s tiene un glitch muy leve */
+.hero__title {
+  margin: 0;
+  line-height: 0;
+  animation: hero-float 8s var(--ease-in-out) infinite;
+}
+
+.hero__title img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: hero-glitch 4s steps(1, end) infinite;
+}
+
+/* Franja del título que se desplaza durante el glitch */
+.hero__title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../Recursos/ke2.png") center / 100% 100% no-repeat;
+  opacity: 0;
+  animation: hero-slice 4s steps(1, end) infinite;
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -1%, 0); }
+}
+
+@keyframes hero-glitch {
+  0%, 90%, 97%, 100% { transform: none; filter: none; }
+  91% {
+    transform: translateX(-0.2%);
+    filter: drop-shadow(0.18vw 0 rgba(255, 59, 32, 0.55)) drop-shadow(-0.18vw 0 rgba(0, 200, 255, 0.45));
+  }
+  93% {
+    transform: translateX(0.15%);
+    filter: drop-shadow(-0.14vw 0 rgba(255, 59, 32, 0.45)) drop-shadow(0.14vw 0 rgba(0, 200, 255, 0.35));
+  }
+  95% {
+    transform: translateX(-0.1%);
+    filter: drop-shadow(0.1vw 0 rgba(255, 59, 32, 0.35)) drop-shadow(-0.1vw 0 rgba(0, 200, 255, 0.3));
+  }
+}
+
+@keyframes hero-slice {
+  0%, 90%, 97%, 100% { opacity: 0; }
+  91% { opacity: 1; clip-path: inset(28% 0 60% 0); transform: translateX(0.5%); }
+  93% { opacity: 1; clip-path: inset(44% 0 47% 0); transform: translateX(-0.4%); }
+  95% { opacity: 1; clip-path: inset(17% 0 76% 0); transform: translateX(0.3%); }
+}
+
+.hero__bottom {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(1.5rem, 3vw, 2.5rem);
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end; /* al centro pisaría la silla de la foto */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__title,
+  .hero__title img,
+  .hero__title::after,
+  .tools__logo,
+  .tools__glow { animation: none; }
+}
+
+/* Franja de disciplinas bajo el hero */
+.hero-strip { position: relative; z-index: 2; }
+
+/* ============ 02 — HERRAMIENTAS ============ */
+
+/* Igual que la portada: capas 16:9 sin recortes, sobre .vignette. El fondo
+   es el del borde de fondo1.jpg. */
+.tools {
+  z-index: 2;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding-block: 0;
+  overflow: hidden;
+  background: #020202;
+}
+
+/* Luz suave detrás de la figura */
+.tools__glow {
+  position: absolute;
+  top: 59%;
+  left: 49.5%;
+  width: 46%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06) 40%, transparent 68%);
+  animation: tools-glow 6s var(--ease-in-out) infinite;
+}
+
+/* Mismo flotado que el título; --i reparte el ciclo de 8 s entre los 9 logos */
+.tools__logo {
+  animation: hero-float 8s var(--ease-in-out) infinite;
+  animation-delay: calc(var(--i) * -0.89s);
+}
+
+@keyframes tools-glow {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+/* ============ 03 — EDICIÓN Y FOTOGRAFÍA ============ */
+
+.photo-grid {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.photo-series__title {
+  margin-bottom: var(--s-3);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+/* Cada serie, una fila de 5 */
+.photo-series__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+.photo-tile { margin: 0; }
+
+/* Fotos reales: color original y sin el recorte del zoom de .media img */
+.photo-tile .media img { filter: none; transform: none; }
+.photo-tile:hover .media img { transform: scale(1.03); }
+
+/* En pantallas estrechas: dos arriba y tres abajo, sin huecos */
+@media (max-width: 900px) {
+  .photo-series__grid { grid-template-columns: repeat(6, 1fr); }
+  .photo-tile { grid-column: span 2; }
+  .photo-tile:nth-child(-n + 2) { grid-column: span 3; }
+}
+
+/* Los verticales en una fila */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.25rem, 2.4vw, 2rem) clamp(0.5rem, 1vw, 1rem);
+}
+
+.video-tile { margin: 0; }
+
+.video-tile__title {
+  margin-top: var(--s-3);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+@media (max-width: 900px) {
+  .video-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.split {
+  display: grid;
+  gap: clamp(3.5rem, 9vw, 8rem);
+}
+
+/* ============ 04 — DESARROLLO ============ */
+
+.dev {
+  position: relative;
+  background: linear-gradient(180deg, var(--bg) 0%, #0C0C0C 45%, var(--bg) 100%);
+}
+
+/* Retícula técnica de fondo */
+.dev::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--line-soft) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line-soft) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(120% 70% at 50% 30%, #000 0%, transparent 78%);
+  -webkit-mask-image: radial-gradient(120% 70% at 50% 30%, #000 0%, transparent 78%);
+  opacity: 0.7;
+}
+
+.dev > .container { position: relative; z-index: 1; }
+
+.dev-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.dev-stat {
+  background: var(--bg);
+  padding: clamp(1.1rem, 2.2vw, 1.6rem);
+  display: grid;
+  gap: 0.4rem;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.dev-stat:hover { background: var(--bg-soft); }
+
+.dev-stat__k {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.dev-stat__v {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  line-height: 1.25;
+  color: var(--fg);
+}
+
+/* Marco de ventana compartido por juegos y páginas web */
+.window {
+  overflow: hidden;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.window__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.4rem;
+  padding: 0.45rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.window__dots { display: flex; flex: none; gap: 0.35rem; }
+
+.window__dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+
+.window__dots i:first-child { background: var(--accent); }
+
+.window__title {
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.window__address {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0.2rem 0.7rem;
+  border-radius: 99px;
+  background: var(--bg-raise);
+  font-size: var(--fs-xs);
+  color: var(--fg-dim);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.window__open {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  color: var(--fg-dim);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.window__open:hover { color: var(--accent); }
+.window__open svg { width: 14px; height: 14px; }
+
+/* Juegos: tres pantallas en fila */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.game-card { display: grid; grid-template-rows: auto 1fr; gap: 1.1rem; }
+
+.game-card__screen { position: relative; display: block; }
+
+.game-card__screen .media { border: 0; }
+.game-card__screen .media img { filter: none; transform: none; }
+.game-card__screen:hover .media img { transform: scale(1.04); }
+
+.game-card__play {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 99px;
+  background: rgba(10, 10, 10, 0.72);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg);
+  transition: background-color var(--dur-fast) var(--ease);
+}
+
+.game-card__play svg { width: 12px; height: 12px; }
+.game-card__screen:hover .game-card__play { background: var(--accent); }
+
+.game-card__body { display: flex; flex-direction: column; gap: 0.55rem; }
+
+.game-card__desc,
+.game-card__plot {
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--fg-dim);
+}
+
+.game-card__label {
+  margin-top: 0.45rem;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.game-card .tags { margin-top: auto; padding-top: 0.5rem; }
+
+/* Páginas web: una ventana por sitio */
+.site-list { display: grid; gap: clamp(2.5rem, 5vw, 4rem); }
+
+.window__view {
+  position: relative;
+  height: clamp(26rem, 75svh, 46rem);
+  background: var(--bg);
+}
+
+.window__view iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.window__shield {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: end;
+  width: 100%;
+  padding: 1.25rem 2rem;
+  cursor: pointer;
+}
+
+.window__shield span {
+  padding: 0.45rem 1rem;
+  border-radius: 99px;
+  background: rgba(10, 10, 10, 0.8);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg);
+  transition: background-color var(--dur-fast) var(--ease);
+}
+
+.window__shield:hover span,
+.window__shield:focus-visible span { background: var(--accent); }
+
+.is-live .window__shield { display: none; }
+
+.site__title {
+  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+}
+
+.site__desc {
+  margin-top: 0.3rem;
+  font-size: var(--fs-sm);
+  color: var(--fg-dim);
+}
+
+@media (max-width: 900px) {
+  .game-grid { grid-template-columns: 1fr; gap: 2.25rem; }
+}
+
+/* ============ 05 — IA ============ */
+
+.ai-videos {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.25rem, 2.4vw, 2rem) clamp(0.75rem, 1.4vw, 1.25rem);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+@media (max-width: 900px) {
+  .ai-videos { grid-template-columns: 1fr; }
+}
+
+.ai {
+  position: relative;
+  overflow: hidden;
+}
+
+.ai::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: min(110vw, 1400px);
+  height: 520px;
+  pointer-events: none;
+  background: radial-gradient(50% 60% at 50% 0%, var(--accent-wash), transparent 70%);
+}
+
+.ai > .container { position: relative; z-index: 1; }
+
+.ai .prompt-bar {
+  max-width: 52rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* ============ CONTACTO ============ */
+
+/* camara.png tiene paredes muy claras: el velo oscuro y los grises más
+   claros de esta sección mantienen legibles los textos encima de la foto. */
+.contact {
+  --fg-dim:   #D0D0D0;
+  --fg-faint: #ABABAB;
+  position: relative;
+  padding-block: clamp(6rem, 14vw, 13rem) clamp(3rem, 6vw, 5rem);
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.8), rgba(10, 10, 10, 0.92)),
+    url("../Recursos/camara.png") center / cover no-repeat;
+}
+
+.contact::before {
+  content: "";
+  position: absolute;
+  bottom: -35%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(120vw, 1200px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-wash), transparent 60%);
+  pointer-events: none;
+  filter: blur(30px);
+}
+
+.contact > .container { position: relative; z-index: 1; }
+
+.contact .eyebrow { margin-bottom: clamp(1rem, 2vw, 1.75rem); }
+
+.contact__title {
+  font-size: clamp(1.9rem, 8.5vw, 9.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  overflow-wrap: break-word;
+}
+
+/* Un poco de aire dentro de la máscara para no cortar tildes ni descendentes */
+.contact__title .line { padding-bottom: 0.06em; }
+
+.contact__title .line--ghost > span {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--fg-faint);
+  transition:
+    transform 1s var(--ease),
+    color 600ms var(--ease),
+    -webkit-text-stroke-color 600ms var(--ease);
+}
+
+.contact__title:hover .line--ghost > span {
+  color: var(--accent);
+  -webkit-text-stroke-color: transparent;
+}
+
+.contact__grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 900px) {
+  .contact__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); }
+}
+
+.contact__lead {
+  font-size: var(--fs-lead);
+  color: var(--fg-dim);
+  max-width: 44ch;
+  line-height: 1.6;
+}
+
+.contact__list { display: grid; }
+
+.contact__profile {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 1.75rem);
+  padding-bottom: clamp(1.25rem, 2.4vw, 1.75rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.contact__photo {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  width: clamp(5.5rem, 10vw, 7.5rem);
+  aspect-ratio: 1;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+}
+
+/* perfil.png ya es circular, pero tiene margen transparente: el círculo
+   de la imagen se ajusta para llenar el marco */
+.contact__photo img {
+  position: absolute;
+  top: -20%;
+  left: -2.56%;
+  width: 105.03%;
+  max-width: none;
+  height: auto;
+}
+
+.contact__who {
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+  min-width: 0;
+}
+
+.contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.contact__handle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  letter-spacing: -0.015em;
+  overflow-wrap: anywhere;
+}
+
+.contact__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+  padding: clamp(1rem, 2vw, 1.35rem) 0;
+  border-bottom: 1px solid var(--line-soft);
+  transition: padding-left var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.contact__item:first-child { border-top: 1px solid var(--line-soft); }
+
+@media (hover: hover) {
+  a.contact__item:hover { padding-left: 0.9rem; border-color: var(--line-strong); }
+}
+
+.contact__k {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  flex: none;
+}
+
+.contact__v {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  letter-spacing: -0.015em;
+  text-align: right;
+  transition: color var(--dur-fast) var(--ease);
+  overflow-wrap: anywhere;
+}
+
+a.contact__item:hover .contact__v { color: var(--accent); }
+
+.contact__v--ph {
+  color: var(--fg-faint);
+  font-weight: 600;
+}
+
+.contact__intro {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  justify-items: start;
+  align-content: start;
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proyectos - Wild Studios</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="proyectos.css" />
+</head>
+<body>
+  <div class="scanline-overlay"></div>
+  <audio id="ui-beep" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+
+  <header class="navbar">
+    <div class="navbar__logo">
+      <img src="portada/isotipo.png" alt="Wild Isotipo" class="navbar__logo-img" />
+    </div>
+    <nav class="navbar__menu">
+      <a href="index.html" class="nav-link">Inicio</a>
+      <a href="servicios.html" class="nav-link">Servicios</a>
+      <a href="proyectos.html" class="nav-link nav-link--active">Proyectos</a>
+      <a href="equipo.html" class="nav-link">Equipo</a>
+      <a href="contacto.html" class="nav-link">Contactos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="proyectos" class="section">
+      <div class="section__header">
+        <h2 class="section__title">Arcade Social</h2>
+        <p class="section__subtitle">Guardianes de la Frontera</p>
+      </div>
+
+      <!-- Game Container -->
+      <div id="game-portal" class="game-window">
+        <div class="game-window__header">
+          <span class="game-window__title">GA_UNIT_01: GUARDIANES_DE_LA_FRONTERA.EXE</span>
+          <div class="game-window__controls">
+            <span>_</span><span>□</span><span>×</span>
+          </div>
+        </div>
+        
+        <div class="game-canvas-wrapper">
+          <canvas id="gameCanvas"></canvas>
+          
+          <!-- UI Overlay -->
+          <div id="game-ui" class="game-ui">
+            <div class="game-ui__stats">
+              <span class="stat-label">MISIONES:</span>
+              <span id="mission-counter" class="stat-value">0 / 3</span>
+            </div>
+            <div id="game-dialog" class="game-dialog hidden">
+              <div class="dialog-box">
+                <p id="dialog-text"></p>
+                <div class="dialog-hint">Presiona [E] para continuar</div>
+              </div>
+            </div>
+            <div id="game-over" class="game-over-screen hidden">
+              <h2>MISIONES COMPLETADAS</h2>
+              <p>"La comunidad se fortalece cuando trabajamos juntos"</p>
+              <button onclick="location.reload()" class="btn btn--primary">REINICIAR</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-window__footer">
+          <div class="game-controls-hint">
+            [WASD/FLECHAS] MOVER | [E] INTERACTUAR
+          </div>
+        </div>
+      </div>
+
+      <!-- EcoHéroes del Río Container -->
+      <div id="game-portal-2" class="game-window game-window--eco">
+        <div class="game-window__header">
+          <span class="game-window__title">GA_UNIT_02: ECOHEROES_DEL_RIO.EXE</span>
+          <div class="game-window__controls">
+            <span>_</span><span>□</span><span>×</span>
+          </div>
+        </div>
+        
+        <div class="game-canvas-wrapper">
+          <canvas id="platformerCanvas"></canvas>
+          
+          <!-- UI Overlay -->
+          <div id="platformer-ui" class="game-ui">
+            <div class="game-ui__stats">
+              <span class="stat-label">RECOLECTADO:</span>
+              <span id="eco-counter" class="stat-value">0</span>
+              <span class="stat-label" style="margin-left: 1rem;">TIEMPO:</span>
+              <span id="eco-timer" class="stat-value">60</span>s
+            </div>
+            
+            <div id="eco-win" class="game-over-screen hidden">
+              <h2>RÍO LIMPIO</h2>
+              <p>"Cuidar el ambiente también es parte del juego"</p>
+              <button onclick="location.reload()" class="btn btn--primary">REINICIAR</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-window__footer">
+          <div class="game-controls-hint">
+            [WASD/FLECHAS] MOVER Y SALTAR | RECOGE LA BASURA
+          </div>
+        </div>
+      </div>
+
+      <!-- Historias de Barrio Container -->
+      <div id="game-portal-3" class="game-window game-window--narrative">
+        <div class="game-window__header">
+          <span class="game-window__title">GA_UNIT_03: HISTORIAS_DE_BARRIO.EXE</span>
+          <div class="game-window__controls">
+            <span>_</span><span>□</span><span>×</span>
+          </div>
+        </div>
+        
+        <div class="game-canvas-wrapper">
+          <canvas id="narrativeCanvas"></canvas>
+          
+          <!-- RPG UI Overlay -->
+          <div id="narrative-ui" class="game-ui">
+            <div id="narrative-dialog" class="rpg-dialog hidden">
+              <div class="rpg-dialog__portrait" id="dialog-portrait"></div>
+              <div class="rpg-dialog__body">
+                <div class="rpg-dialog__name" id="npc-name">NPC NAME</div>
+                <p class="rpg-dialog__text" id="npc-text"></p>
+                <div class="dialog-hint">Presiona [E] para continuar</div>
+              </div>
+            </div>
+
+            <div id="narrative-over" class="game-over-screen hidden">
+              <h2>HISTORIAS DESCUBIERTAS</h2>
+              <p>"Cada barrio tiene una historia que merece ser contada"</p>
+              <button onclick="location.reload()" class="btn btn--primary">REINICIAR</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-window__footer">
+          <div class="game-controls-hint">
+            [WASD/FLECHAS] RECORRE EL BARRIO | [E] ESCUCHA HISTORIAS
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <script src="game.js"></script>
+    <script src="platformer.js"></script>
+    <script src="narrative.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

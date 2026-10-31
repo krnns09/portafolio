@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wild Studios - Videojuegos Sociales en Cúcuta</title>
+  <meta name="description" content="Estudio de desarrollo de videojuegos con enfoque social en Cúcuta, Colombia. Videojuegos, pixel art, gamificación educativa y narrativas interactivas." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Overlay tipo scanline -->
+  <div class="scanline-overlay"></div>
+
+  <!-- Sonido retro -->
+  <audio id="ui-beep" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="navbar__logo">
+      <img src="portada/isotipo.png" alt="Wild Isotipo" class="navbar__logo-img" />
+    </div>
+    <nav class="navbar__menu">
+      <a href="index.html" class="nav-link nav-link--active">Inicio</a>
+      <a href="servicios.html" class="nav-link">Servicios</a>
+      <a href="proyectos.html" class="nav-link">Proyectos</a>
+      <a href="equipo.html" class="nav-link">Equipo</a>
+      <a href="contacto.html" class="nav-link">Contactos</a>
+    </nav>
+  </header>
+
+  <!-- HERO / INICIO -->
+  <main>
+    <section id="inicio" class="section hero">
+      <div class="hero__content">
+        <div class="hero__logo-wrapper">
+          <img src="portada/logo.png" alt="Wild Studios Logo" class="hero__logo-large" />
+          <p class="hero__slogan pixel-font">donde las historias se juegan</p>
+        </div>
+      </div>
+    <section id="sobre-nosotros" class="section about">
+      <div class="container--large">
+        <!-- Terminal Header -->
+        <div class="terminal-header">
+          <span class="terminal-tag">[ STATUS: SYSTEM_ONLINE ]</span>
+          <span class="terminal-tag">[ LOG_FILE: STUDIO_ORIGIN ]</span>
+        </div>
+
+        <div class="about__header">
+          <h2 class="section-title"><span class="text-accent">> </span>Sobre Nosotros</h2>
+          <div class="about__main-text game-chat-box">
+            <p>Wild Studios es un estudio creativo de desarrollo de videojuegos que combina tecnología, arte y narrativa para crear experiencias interactivas con impacto social. Desde la ciudad de Cúcuta, nuestro equipo trabaja en el diseño de mundos digitales que no solo entretienen, sino que también cuentan historias, generan reflexión y conectan a las personas con realidades y emociones a través del juego.</p>
+            <p class="text-accent underline">"Creemos que los videojuegos son una poderosa herramienta cultural capaz de inspirar, educar y transformar la manera en que las personas perciben su entorno."</p>
+          </div>
+        </div>
+
+        <!-- Quest Log Grid -->
+        <div class="quest-log">
+          <div class="quest-item">
+            <div class="quest-item__header">
+              <span class="quest-icon">◈</span>
+              <h3 class="quest-title">MAIN QUEST: Misión</h3>
+              <div class="quest-status">IN_PROGRESS</div>
+            </div>
+            <div class="quest-description">
+              <p>Desarrollar videojuegos innovadores que integren arte, tecnología y narrativa para crear experiencias interactivas que entretengan, inspiren y generen impacto social, impulsando el talento creativo y tecnológico desde nuestra región hacia el mundo.</p>
+              <div class="stat-bar"><div class="stat-bar__fill" style="width: 85%;"></div></div>
+            </div>
+          </div>
+
+          <div class="quest-item">
+            <div class="quest-item__header">
+              <span class="quest-icon">★</span>
+              <h3 class="quest-title">ULTIMATE GOAL: Visión</h3>
+              <div class="quest-status">LOCKED</div>
+            </div>
+            <div class="quest-description">
+              <p>Convertirnos en un estudio de videojuegos reconocido por crear experiencias digitales originales que fusionen entretenimiento y conciencia social, posicionando a Cúcuta como un referente emergente en la industria creativa y del desarrollo de videojuegos en Latinoamérica.</p>
+              <div class="stat-bar"><div class="stat-bar__fill" style="width: 40%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="footer__text">
+      © <span id="year"></span> Wild Studios · Videojuegos Sociales desde Cúcuta, Colombia.
+    </p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
