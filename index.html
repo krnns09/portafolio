@@ -192,6 +192,14 @@
 
           <div>
             <div class="block-head" data-reveal>
+              <h3 class="block-head__title">Realidad aumentada</h3>
+              <span class="block-head__count" id="ar-count"></span>
+            </div>
+            <div class="game-grid game-grid--wide" id="ar-grid" data-stagger></div>
+          </div>
+
+          <div>
+            <div class="block-head" data-reveal>
               <h3 class="block-head__title">Páginas web</h3>
               <span class="block-head__count" id="sites-count"></span>
             </div>
@@ -204,14 +212,44 @@
     </section>
 
     <!-- ==================================================
-         05 — GENERACIÓN CON IA
+         05 — MODELADO 3D
          ================================================== -->
-    <section class="section ai" id="ia" data-section="05" aria-labelledby="t-ia">
+    <section class="section model" id="modelado" data-section="05" aria-labelledby="t-modelado">
       <div class="container">
 
         <header class="sec-head">
           <p class="eyebrow sec-head__meta" data-reveal>
             <span class="eyebrow__num">05</span>
+            <span class="eyebrow__line" aria-hidden="true"></span>
+            Capítulo
+          </p>
+          <h2 class="sec-head__title" id="t-modelado" data-reveal>
+            Modelado<br><em>3D</em>
+          </h2>
+          <p class="sec-head__lead" id="model-lead" data-reveal style="--i:1"></p>
+        </header>
+
+        <div class="viewer" id="model-viewer" data-reveal></div>
+
+        <div class="dev-stats model-stats" id="model-stats" data-stagger></div>
+
+        <div class="block-head" data-reveal>
+          <h3 class="block-head__title">Proceso</h3>
+        </div>
+        <ul class="model-steps" id="model-steps" data-stagger></ul>
+
+      </div>
+    </section>
+
+    <!-- ==================================================
+         06 — GENERACIÓN CON IA
+         ================================================== -->
+    <section class="section ai" id="ia" data-section="06" aria-labelledby="t-ia">
+      <div class="container">
+
+        <header class="sec-head">
+          <p class="eyebrow sec-head__meta" data-reveal>
+            <span class="eyebrow__num">06</span>
             <span class="eyebrow__line" aria-hidden="true"></span>
             Capítulo
           </p>
@@ -239,11 +277,11 @@
     <!-- ==================================================
          CONTACTO
          ================================================== -->
-    <section class="contact" id="contacto" data-section="06" aria-labelledby="t-contacto">
+    <section class="contact" id="contacto" data-section="07" aria-labelledby="t-contacto">
       <div class="container">
 
         <p class="eyebrow" data-reveal>
-          <span class="eyebrow__num">06</span>
+          <span class="eyebrow__num">07</span>
           <span class="eyebrow__line" aria-hidden="true"></span>
           Cierre
         </p>
@@ -292,6 +330,7 @@
   <script src="js/render.js"></script>
   <script src="js/scroll.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/viewer.js"></script>
   <script src="js/main.js"></script>
 
 </body>

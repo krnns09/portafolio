@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#0b0618" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="THUMB WARS: guerra de pulgares con realidad aumentada desde el navegador de tu celular." />
+    
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Lilita+One&display=swap" rel="stylesheet" />
+    <title>THUMB WARS</title>
+    <script defer src="./assets/index-DNG3MJD8.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- ===== Escenario de cámara (vídeo real + capa AR) ===== -->
+      <div id="stage" class="stage" hidden>
+        <video id="video" playsinline muted autoplay></video>
+        <canvas id="overlay"></canvas>
+        <div class="vignette"></div>
+      </div>
+
+      <!-- ===== A. INICIO ===== -->
+      <section id="screen-home" class="screen active" data-screen="home">
+        <!-- Regreso al portafolio: la ruta parte de dist/ -->
+        <a class="back-link" href="../../index.html#desarrollo" aria-label="Volver al portafolio" title="Volver al portafolio">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+        </a>
+        <div class="home-bg"><span class="bolt-bg"></span><span class="fire-bg"></span></div>
+        <canvas class="home-char" id="home-char-blue" width="220" height="260"></canvas>
+        <div class="home-center">
+          <h1 class="logo">
+            <span class="logo-1">THUMB</span>
+            <span class="logo-vs">⚔</span>
+            <span class="logo-2">WARS</span>
+          </h1>
+          <p class="tagline">Guerra de pulgares con realidad aumentada</p>
+          <nav class="menu">
+            <button class="btn btn-gold btn-xl" data-action="play">▶ JUGAR CON CÁMARA</button>
+            <div class="menu-row">
+              <button class="btn btn-ghost" data-action="pc-cpu">⌨ SIN CÁMARA · VS CPU</button>
+              <button class="btn btn-ghost" data-action="pc-duo">⌨ 1 VS 1</button>
+            </div>
+            <button class="btn btn-blue" data-action="customize">🛡 PERSONALIZAR</button>
+            <button class="btn btn-red" data-action="howto">❓ CÓMO JUGAR</button>
+          </nav>
+        </div>
+        <canvas class="home-char" id="home-char-red" width="220" height="260"></canvas>
+        <p class="privacy">🔒 El vídeo se procesa solo en tu dispositivo. No se graba ni se envía.</p>
+      </section>
+
+      <!-- ===== CÓMO JUGAR ===== -->
+      <section id="screen-howto" class="screen" data-screen="howto">
+        <header class="screen-header">
+          <button class="btn btn-ghost btn-sm" data-action="home">◀ VOLVER</button>
+          <h2>CÓMO JUGAR</h2>
+          <span></span>
+        </header>
+        <div class="howto-grid">
+          <article class="howto-card">
+            <svg viewBox="0 0 120 80" aria-hidden="true">
+              <rect x="10" y="62" width="100" height="6" rx="3" fill="#3b2d5c" />
+              <path d="M52 62 L60 44 L68 62" fill="#6b5a92" />
+              <rect x="34" y="18" width="52" height="28" rx="5" fill="#1d1533" stroke="#ffd54f" stroke-width="3" />
+              <circle cx="40" cy="32" r="3" fill="#4fe3ff" />
+              <path d="M88 32 L112 26 M88 32 L112 38" stroke="#ffd54f" stroke-dasharray="3 3" />
+            </svg>
+            <h3 class="only-mobile">1. Coloca el celular</h3>
+            <p class="only-mobile">En <b>horizontal</b>, sobre un soporte estable, con la <b>cámara trasera</b> a la altura de las manos. Nunca desde arriba.</p>
+            <h3 class="only-pc">1. Usa tu webcam</h3>
+            <p class="only-pc">Siéntense <b>uno a cada lado</b> y junten las manos frente a la <b>webcam</b>, a su altura. La imagen se ve como un espejo.</p>
+          </article>
+          <article class="howto-card">
+            <svg viewBox="0 0 120 80" aria-hidden="true">
+              <rect x="6" y="40" width="46" height="22" rx="10" fill="#2e8bff" />
+              <rect x="68" y="40" width="46" height="22" rx="10" fill="#ff3b30" />
+              <rect x="44" y="18" width="10" height="26" rx="5" fill="#8fd3ff" transform="rotate(-10 49 44)" />
+              <rect x="66" y="18" width="10" height="26" rx="5" fill="#ff8a50" transform="rotate(10 71 44)" />
+              <path d="M46 48 Q60 58 74 48" stroke="#fff" stroke-width="4" fill="none" />
+            </svg>
+            <h3>2. Manos entrelazadas</h3>
+            <p>Jugadores frente a frente. <b>AZUL a la izquierda</b> y <b>ROJO a la derecha</b> de la imagen. Pulgares arriba y de perfil a la cámara.</p>
+          </article>
+          <article class="howto-card">
+            <svg viewBox="0 0 120 80" aria-hidden="true">
+              <path d="M40 54 Q60 40 78 50" stroke="#ff8a50" stroke-width="10" stroke-linecap="round" fill="none" />
+              <path d="M30 30 Q52 18 66 42" stroke="#8fd3ff" stroke-width="10" stroke-linecap="round" fill="none" />
+              <circle cx="92" cy="26" r="15" fill="none" stroke="#4fe3ff" stroke-width="5" stroke-dasharray="70 100" />
+              <text x="92" y="31" font-size="13" text-anchor="middle" fill="#fff" font-family="Lilita One">3s</text>
+            </svg>
+            <h3>3. Domina 3 segundos</h3>
+            <p>Pon tu pulgar <b>encima</b> del pulgar rival y mantenlo <b>3 segundos</b> seguidos. Si se escapa, el contador se reinicia.</p>
+          </article>
+          <article class="howto-card">
+            <svg viewBox="0 0 120 80" aria-hidden="true">
+              <text x="60" y="46" font-size="30" text-anchor="middle" fill="#ffd54f" font-family="Bungee">2-1</text>
+              <path d="M30 60 L90 60" stroke="#fff" stroke-width="3" />
+              <circle cx="45" cy="68" r="4" fill="#2e8bff" /><circle cx="60" cy="68" r="4" fill="#ff3b30" /><circle cx="75" cy="68" r="4" fill="#2e8bff" />
+            </svg>
+            <h3>4. Mejor de 3</h3>
+            <p>Cada dominio confirmado vale <b>1 punto</b>. El primero en llegar a <b>2 puntos</b> gana (máximo 3 rondas).</p>
+          </article>
+        </div>
+        <p class="howto-tips howto-keys"><b>Sin cámara</b> — Azul: <kbd>D</kbd> atacar, <kbd>A</kbd> esquivar · Rojo (1 vs 1): <kbd>←</kbd> atacar, <kbd>→</kbd> esquivar. Si te atrapan, pulsa esquivar muchas veces para soltarte. En móvil, usa los botones.</p>
+        <p class="howto-tips">💡 Buena luz, fondo liso y sin mangas que tapen la muñeca. Si la detección duda, no se dan puntos.</p>
+        <footer class="screen-footer">
+          <button class="btn btn-gold" data-action="play">▶ JUGAR</button>
+        </footer>
+      </section>
+
+      <!-- ===== PERSONALIZACIÓN ===== -->
+      <section id="screen-customize" class="screen" data-screen="customize">
+        <header class="screen-header">
+          <button class="btn btn-ghost btn-sm" data-action="customize-back">◀ VOLVER</button>
+          <h2>ARMERÍA REAL</h2>
+          <button class="btn btn-gold btn-sm" data-action="customize-done">✔ LISTO</button>
+        </header>
+        <div class="armory">
+          <div class="kingdom-panel blue" data-player="blue">
+            <div class="kp-head">
+              <canvas class="kp-preview" width="200" height="220"></canvas>
+              <div class="kp-info">
+                <h3>BLUE KINGDOM</h3>
+                <p>Hielo · Electricidad</p>
+                <button class="btn btn-ghost btn-xs" data-action="randomize" data-player="blue">🎲 Aleatorio</button>
+              </div>
+            </div>
+            <div class="slot-tabs"></div>
+            <div class="item-grid"></div>
+          </div>
+          <div class="kingdom-panel red" data-player="red">
+            <div class="kp-head">
+              <canvas class="kp-preview" width="200" height="220"></canvas>
+              <div class="kp-info">
+                <h3>RED KINGDOM</h3>
+                <p>Fuego · Lava</p>
+                <button class="btn btn-ghost btn-xs" data-action="randomize" data-player="red">🎲 Aleatorio</button>
+              </div>
+            </div>
+            <div class="slot-tabs"></div>
+            <div class="item-grid"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== B. PREPARACIÓN ===== -->
+      <section id="screen-setup" class="screen hud" data-screen="setup">
+        <header class="hud-top">
+          <button class="btn btn-ghost btn-sm" data-action="home">◀ SALIR</button>
+          <div id="setup-message" class="banner">Preparando cámara…</div>
+          <div class="hud-tools">
+            <button class="btn btn-ghost btn-sm" data-action="toggle-music" title="Música">♫</button>
+            <button class="btn btn-ghost btn-sm" data-action="switch-camera" title="Cambiar cámara">📷</button>
+            <button class="btn btn-ghost btn-sm" data-action="debug" title="Modo depuración">🐞</button>
+          </div>
+        </header>
+
+        <div class="combat-zone" aria-hidden="true"><span>ZONA DE COMBATE</span></div>
+
+        <aside class="player-card blue" data-player="blue">
+          <h4><span class="dot"></span>AZUL</h4>
+          <ul class="checks"></ul>
+          <div class="hint">Esperando mano…</div>
+          <div class="hold"><i></i></div>
+        </aside>
+        <aside class="player-card red" data-player="red">
+          <h4><span class="dot"></span>ROJO</h4>
+          <ul class="checks"></ul>
+          <div class="hint">Esperando mano…</div>
+          <div class="hold"><i></i></div>
+        </aside>
+
+        <footer class="hud-bottom">
+          <button class="btn btn-ghost btn-sm" data-action="customize">🛡 PERSONALIZAR</button>
+          <button class="btn btn-ghost btn-sm" data-action="swap">⇄ INTERCAMBIAR LADOS</button>
+          <button class="btn btn-gold" id="btn-start" data-action="start" disabled>⚔ COMENZAR</button>
+        </footer>
+
+        <div id="setup-status" class="status-panel">
+          <div class="spinner"></div>
+          <p class="status-text">Iniciando…</p>
+          <div class="status-actions" hidden>
+            <button class="btn btn-gold btn-sm" data-action="retry-camera">↻ Reintentar</button>
+            <button class="btn btn-blue btn-sm" data-action="pc-cpu">⌨ Jugar sin cámara</button>
+            <button class="btn btn-ghost btn-sm" data-action="home">Volver</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== C. COMBATE ===== -->
+      <section id="screen-fight" class="screen hud" data-screen="fight">
+        <header class="scoreboard">
+          <div class="sb-side blue">
+            <span class="sb-name">BLUE</span>
+            <span class="sb-score" id="score-blue">0</span>
+          </div>
+          <div class="sb-center">
+            <span class="sb-round" id="round-label">RONDA 1 / 3</span>
+            <div class="sb-pips" id="round-pips"><i></i><i></i><i></i></div>
+          </div>
+          <div class="sb-side red">
+            <span class="sb-score" id="score-red">0</span>
+            <span class="sb-name">RED</span>
+          </div>
+        </header>
+        <button class="btn btn-ghost btn-sm hud-pause" data-action="pause" title="Pausa">⏸</button>
+        <button class="btn btn-ghost btn-sm hud-debug" data-action="debug" title="Depuración">🐞</button>
+
+        <div id="dom-indicator" class="dom-indicator" hidden>
+          <svg viewBox="0 0 100 100">
+            <circle class="ring-bg" cx="50" cy="50" r="42" />
+            <circle class="ring-fg" id="dom-ring" cx="50" cy="50" r="42" />
+          </svg>
+          <span id="dom-secs">3.0</span>
+          <b id="dom-label">AZUL DOMINA</b>
+        </div>
+
+        <div id="fight-status" class="fight-status" hidden></div>
+
+        <div id="pc-controls" class="pc-controls" hidden>
+          <div class="pc-side blue">
+            <button class="btn btn-ghost" data-pc="blue:dodge"><kbd>A</kbd> ESQUIVAR</button>
+            <button class="btn btn-blue" data-pc="blue:attack"><kbd>D</kbd> ATACAR</button>
+          </div>
+          <div class="pc-side red">
+            <button class="btn btn-red" data-pc="red:attack"><kbd>←</kbd> ATACAR</button>
+            <button class="btn btn-ghost" data-pc="red:dodge"><kbd>→</kbd> ESQUIVAR</button>
+          </div>
+        </div>
+
+        <div id="countdown" class="countdown" hidden></div>
+
+        <div id="point-overlay" class="point-overlay" hidden>
+          <div class="po-title" id="po-title">¡PUNTO!</div>
+          <div class="po-score" id="po-score">1 - 0</div>
+          <div class="po-sub" id="po-sub">Ronda 1</div>
+        </div>
+
+        <div id="recovery" class="recovery" hidden>
+          <p id="recovery-text">Vuelvan a la posición inicial: manos entrelazadas, pulgares arriba</p>
+          <div class="hold"><i id="recovery-bar"></i></div>
+        </div>
+      </section>
+
+      <!-- ===== PAUSA ===== -->
+      <div id="pause-menu" class="modal" hidden>
+        <div class="modal-box">
+          <h2>PAUSA</h2>
+          <button class="btn btn-gold" data-action="resume">▶ CONTINUAR</button>
+          <button class="btn btn-blue" data-action="recalibrate" id="btn-recalibrate">↻ RECALIBRAR</button>
+          <button class="btn btn-red" data-action="quit">⌂ SALIR AL INICIO</button>
+          <div class="modal-sound">
+            <button class="btn btn-ghost btn-sm" data-action="toggle-music">♫ Música</button>
+            <button class="btn btn-ghost btn-sm" data-action="toggle-sfx">🔊 Efectos</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== E. VICTORIA ===== -->
+      <section id="screen-victory" class="screen" data-screen="victory">
+        <div class="victory-rays"></div>
+        <canvas id="victory-canvas" class="victory-canvas" width="520" height="300"></canvas>
+        <div class="victory-info">
+          <h2 class="victory-title">VICTORIA</h2>
+          <p class="victory-kingdom" id="victory-kingdom">BLUE KINGDOM</p>
+          <p class="victory-score" id="victory-score">2 - 1</p>
+          <ol class="victory-history" id="victory-history"></ol>
+          <div class="victory-actions">
+            <button class="btn btn-gold" data-action="rematch">⚔ REVANCHA</button>
+            <button class="btn btn-ghost" data-action="quit">⌂ VOLVER AL INICIO</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Controles de sonido (globales) ===== -->
+      <div class="sound-controls">
+        <button class="btn btn-ghost btn-xs" data-action="toggle-music" id="btn-music" title="Música">♫</button>
+        <button class="btn btn-ghost btn-xs" data-action="toggle-sfx" id="btn-sfx" title="Efectos">🔊</button>
+      </div>
+
+      <!-- ===== Depuración ===== -->
+      <pre id="debug-panel" class="debug-panel" hidden></pre>
+
+      <!-- ===== Orientación ===== -->
+      <div id="rotate-overlay" class="rotate-overlay">
+        <div class="rotate-phone"></div>
+        <h2>GIRA TU TELÉFONO</h2>
+        <p>THUMB WARS se juega en horizontal</p>
+        <p class="rotate-help">¿No gira? Desactiva el <b>bloqueo de rotación</b> del teléfono<br />(Android: panel de ajustes rápidos → "Rotación automática" · iPhone: Centro de control → candado).</p>
+        <button class="btn btn-ghost btn-sm" data-action="allow-portrait">Continuar en vertical de todos modos</button>
+      </div>
+
+      <div id="toast" class="toast" hidden></div>
+    </div>
+  </body>
+</html>

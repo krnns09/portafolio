@@ -1,0 +1,29 @@
+html, body { margin: 0; height: 100%; overflow: hidden; background: #0a0a0a; color: #f4f4f4; font-family: "Space Grotesk", system-ui, sans-serif; }
+
+#camara { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#camara.espejo { transform: scaleX(-1); }
+
+/* A-Frame da pointer-events: auto y fondo a todo el contenido de la capa AR: taparía el lienzo */
+#capa { position: fixed; inset: 0; z-index: 10; padding: 0 !important; }
+#capa, #capa * { pointer-events: none; }
+#capa a, #capa button { pointer-events: auto; }
+
+.volver { position: absolute; top: 8px; left: 8px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(10, 10, 10, 0.72); color: #f4f4f4; }
+
+.botones { position: absolute; right: 12px; bottom: 12px; display: flex; gap: 8px; }
+.botones button { min-height: 44px; padding: 0 1rem; border: 1px solid rgba(255, 255, 255, 0.24); border-radius: 99px; background: rgba(10, 10, 10, 0.72); color: inherit; font-family: inherit; font-size: 0.8rem; font-weight: 500; cursor: pointer; }
+.botones button:hover { border-color: #ff3b20; }
+.botones button[aria-pressed="false"] { opacity: 0.5; text-decoration: line-through; }
+:focus-visible { outline: 2px solid #ff3b20; outline-offset: 3px; }
+
+.ayuda { position: absolute; left: 12px; bottom: 12px; max-width: min(24rem, 42vw); margin: 0; font-size: 0.8rem; line-height: 1.45; color: #d6d6d6; text-shadow: 0 1px 4px #000; }
+.aviso { position: absolute; top: 14px; left: 50%; max-width: 80vw; margin: 0; padding: 0.5rem 1rem; transform: translateX(-50%); border-radius: 99px; background: rgba(10, 10, 10, 0.85); font-size: 0.8rem; }
+.aviso:empty { display: none; }
+
+.dano { position: absolute; inset: 0; box-shadow: inset 0 0 140px #ff3b20; opacity: 0; }
+.dano.activo { animation: dano 0.5s ease-out; }
+@keyframes dano { from { opacity: 0.9; } to { opacity: 0; } }
+
+@media (max-width: 640px) {
+  .ayuda { right: 12px; bottom: 68px; max-width: none; }
+}

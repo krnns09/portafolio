@@ -148,6 +148,30 @@ const KP = (function () {
     );
   }
 
+  /* ----------------------------------------- Modelado 3D
+     El lienzo lo añade el visor al cargar (ver viewer.js): hasta entonces, y si
+     algo falla, queda la captura. */
+  function modelLead(model) {
+    return "<strong>" + esc(model.subtitle) + ".</strong> " + esc(model.description);
+  }
+
+  function modelViewer(model) {
+    return (
+      '<img class="viewer__poster" src="' + esc(model.poster) + '" alt="' + esc(model.alt) + '" ' +
+        'width="1380" height="776" loading="lazy" decoding="async">' +
+      '<div class="viewer__canvas" data-viewer-canvas></div>' +
+      '<div class="viewer__progress" aria-hidden="true">' +
+        '<span class="viewer__bar"></span>' +
+        '<span class="viewer__pct" data-viewer-pct>0 %</span>' +
+      "</div>" +
+      '<p class="viewer__msg" role="status" data-viewer-msg></p>'
+    );
+  }
+
+  function modelStep(text) {
+    return '<li class="model-step" data-reveal>' + esc(text) + "</li>";
+  }
+
   /* -------------------------------------- Perfil de contacto */
   function contactProfile(profile) {
     const buttons = profile.links.map(function (link) {
@@ -285,6 +309,9 @@ const KP = (function () {
     gameCard: gameCard,
     siteWindow: siteWindow,
     devStat: devStat,
+    modelLead: modelLead,
+    modelViewer: modelViewer,
+    modelStep: modelStep,
     contactProfile: contactProfile,
     contactRow: contactRow,
     navLink: navLink,

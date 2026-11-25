@@ -39,7 +39,7 @@ const KPRender = (function () {
 
     /* El rail sólo existe en el índice: recorre sus secciones */
     mount("rail-items", map(d.nav, KP.railItem) +
-      KP.railItem({ num: "06", label: "Cierre", id: "contacto" }));
+      KP.railItem({ num: "07", label: "Cierre", id: "contacto" }));
 
     /* 01 — Portada: sus imágenes están en el HTML; aquí sólo la franja */
     mount("hero-strip", KP.marqueeTrack(d.hero.strip));
@@ -59,10 +59,18 @@ const KPRender = (function () {
     mount("dev-stats", map(d.development.stats, KP.devStat));
     mount("game-grid", map(d.development.games, KP.gameCard));
     mount("site-list", map(d.development.sites, KP.siteWindow));
+    mount("ar-grid", map(d.development.ar, KP.gameCard));
+    setCount("ar-count", d.development.ar.length);
     setCount("games-count", d.development.games.length);
     setCount("sites-count", d.development.sites.length);
 
-    /* 05 — IA */
+    /* 05 — Modelado 3D */
+    mount("model-lead", KP.modelLead(d.model));
+    mount("model-viewer", KP.modelViewer(d.model));
+    mount("model-stats", map(d.model.stats, KP.devStat));
+    mount("model-steps", map(d.model.process, KP.modelStep));
+
+    /* 06 — IA */
     mount("ai-videos", map(d.ai.videos, KP.videoTile));
 
     const promptText = document.getElementById("ai-prompt-text");

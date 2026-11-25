@@ -13,6 +13,8 @@
   --bg-soft:       #141414;
   --bg-raise:      #191919;
 
+  --bg-scene:      #696D59;   /* fondo del visor 3D mientras llega su imagen */
+
   --fg:            #F4F4F4;
   --fg-dim:        #9B9B9B;
   --fg-faint:      #616161;

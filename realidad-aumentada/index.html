@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0A0A">
+  <meta name="description" content="ÓRBITA — minijuego espacial en realidad aumentada con A-Frame: apunta con la mirada y defiende la estación.">
+  <title>ÓRBITA — Minijuego WebAR</title>
+  <link rel="stylesheet" href="orbita.css">
+  <script src="vendor/aframe.min.js"></script>
+  <script src="orbita.js"></script>
+</head>
+<body>
+  <video id="camara" playsinline muted hidden></video>
+
+  <div id="capa">
+    <a class="volver" href="../index.html#desarrollo" aria-label="Volver al portafolio" title="Volver al portafolio">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+    </a>
+    <div class="botones">
+      <button type="button" id="btn-ar">Ver en tu espacio (AR)</button>
+      <button type="button" id="btn-sonido" aria-pressed="true">Sonido</button>
+    </div>
+    <p class="ayuda" id="ayuda"></p>
+    <p class="aviso" id="aviso" role="status"></p>
+    <div class="dano" id="dano" aria-hidden="true"></div>
+  </div>
+
+  <!-- alpha: el espacio se oculta en AR y detrás se ve la cámara -->
+  <a-scene juego xr-mode-ui="enabled: false" renderer="alpha: true; antialias: true"
+           webxr="optionalFeatures: local-floor, dom-overlay; overlayElement: #capa">
+
+    <a-entity id="espacio">
+      <a-sphere radius="60" material="shader: flat; side: back; color: #05060c" segments-width="24" segments-height="16"></a-sphere>
+      <a-entity estrellas></a-entity>
+      <a-sphere position="-16 -5 -34" radius="9" material="color: #2b3350; roughness: 1"></a-sphere>
+      <a-torus position="-16 -5 -34" rotation="72 14 0" radius="13" radius-tubular="0.25"
+               material="shader: flat; color: #ff3b20; opacity: 0.45; transparent: true" segments-tubular="80"></a-torus>
+    </a-entity>
+
+    <a-entity light="type: hemisphere; color: #cfd8ff; groundColor: #402018; intensity: 1.4"></a-entity>
+    <a-entity light="type: directional; color: #ffe3c8; intensity: 2" position="4 8 3"></a-entity>
+
+    <!-- Menú dentro de la escena: se elige con la misma retícula -->
+    <a-entity id="menu" position="0 1.7 -3">
+      <a-entity id="menu-titulo" rotulo="ancho: 2.6; alto: 1.5" position="0 0.72 0"></a-entity>
+      <a-entity id="menu-jugar" class="blanco" boton position="0 -0.4 0"
+                geometry="primitive: plane; width: 1.5; height: 0.46" material="shader: flat; color: #ff3b20">
+        <a-entity rotulo="texto: JUGAR; ancho: 1.4; alto: 0.42; tamano: 84" position="0 0 0.01"></a-entity>
+      </a-entity>
+    </a-entity>
+
+    <a-entity id="blancos"></a-entity>
+
+    <a-entity id="ojo" camera="fov: 75" position="0 1.6 0" look-controls wasd-controls="enabled: false">
+      <!-- Cursor virtual: el raycaster sólo ve .blanco; con fuse dispara al sostener la mirada -->
+      <a-entity id="cursor" cursor="fuse: true; fuseTimeout: 650" raycaster="objects: .blanco; far: 40; interval: 30"
+                position="0 0 -1" geometry="primitive: ring; radiusInner: 0.018; radiusOuter: 0.026; segmentsTheta: 32"
+                material="shader: flat; color: #f4f4f4; depthTest: false; transparent: true">
+        <a-entity id="carga" visible="false" geometry="primitive: ring; radiusInner: 0.032; radiusOuter: 0.042; thetaStart: 90; thetaLength: 0.1"
+                  material="shader: flat; color: #ff3b20; depthTest: false; transparent: true; side: double"></a-entity>
+      </a-entity>
+      <a-entity id="hud" rotulo="ancho: 1.0; alto: 0.16; fondo: rgba(10,10,10,.6); tamano: 46" position="0 0.56 -1.5" visible="false"></a-entity>
+    </a-entity>
+  </a-scene>
+</body>
+</html>

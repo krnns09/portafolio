@@ -1,6 +1,7 @@
 /* ============================================================
    KePro — Composición de cada capítulo
-   01 Portada · 02 Herramientas · 03 Edición y Fotografía · 04 Desarrollo · 05 IA · Contacto
+   01 Portada · 02 Herramientas · 03 Edición y Fotografía · 04 Desarrollo
+   05 Modelado 3D · 06 IA · Contacto
    ============================================================ */
 
 /* ============ 01 — PORTADA ============ */
@@ -352,11 +353,17 @@ body:has([data-nav="portada"].is-active) .nav .brand {
 .window__open:hover { color: var(--accent); }
 .window__open svg { width: 14px; height: 14px; }
 
-/* Juegos: tres pantallas en fila */
+/* Juegos: cuatro pantallas en fila, o dos si no caben */
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.game-grid--wide { grid-template-columns: repeat(2, 1fr); }
+
+@media (max-width: 1280px) {
+  .game-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 .game-card { display: grid; grid-template-rows: auto 1fr; gap: 1.1rem; }
@@ -462,10 +469,116 @@ body:has([data-nav="portada"].is-active) .nav .brand {
 }
 
 @media (max-width: 900px) {
-  .game-grid { grid-template-columns: 1fr; gap: 2.25rem; }
+  .game-grid,
+  .game-grid--wide { grid-template-columns: 1fr; gap: 2.25rem; }
 }
 
-/* ============ 05 — IA ============ */
+/* ============ 05 — MODELADO 3D ============ */
+
+.model > .container { position: relative; z-index: 1; }
+
+.viewer {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
+  background: var(--bg-scene);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.viewer__poster,
+.viewer__canvas,
+.viewer__canvas canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.viewer__poster { object-fit: cover; }
+
+.viewer__canvas {
+  background: var(--bg-scene);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-slow) var(--ease);
+}
+
+.viewer__canvas canvas { cursor: grab; }
+.viewer__canvas canvas:active { cursor: grabbing; }
+
+.viewer.is-ready .viewer__canvas { opacity: 1; visibility: visible; }
+
+.viewer__progress,
+.viewer__msg {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.45rem 1rem;
+  border-radius: 99px;
+  background: rgba(10, 10, 10, 0.8);
+  font-size: var(--fs-xs);
+  color: var(--fg);
+}
+
+.viewer__progress {
+  display: none;
+  align-items: center;
+  gap: var(--s-3);
+  letter-spacing: var(--tracking-wide);
+}
+
+.viewer.is-loading .viewer__progress { display: flex; }
+
+.viewer__bar {
+  position: relative;
+  width: clamp(6rem, 14vw, 12rem);
+  height: 2px;
+  background: var(--line-strong);
+}
+
+.viewer__bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(var(--p, 0));
+  transform-origin: 0 50%;
+}
+
+.viewer__pct { min-width: 4ch; font-variant-numeric: tabular-nums; }
+
+.viewer__msg { max-width: calc(100% - 1.5rem); }
+.viewer__msg:empty { display: none; }
+
+/* Columnas fijas: seis cifras sin celdas vacías */
+.model-stats { grid-template-columns: repeat(6, 1fr); }
+
+@media (max-width: 1200px) { .model-stats { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px)  { .model-stats { grid-template-columns: repeat(2, 1fr); } }
+
+.model-steps { display: grid; gap: var(--s-3); }
+
+.model-step {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  color: var(--fg-dim);
+}
+
+.model-step::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-0.15em);
+}
+
+/* ============ 06 — IA ============ */
 
 .ai-videos {
   position: relative;

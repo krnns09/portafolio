@@ -27,6 +27,7 @@
     try {
       KPScroll.init();
       KPUI.init();
+      if (typeof KPViewer !== "undefined") KPViewer.init();
     } catch (err) {
       console.error("[KePro] Error al iniciar las interacciones:", err);
     }

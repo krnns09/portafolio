@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUSIC PONG — Arcade Musical Multidimensional</title>
+  <meta name="description" content="MUSIC PONG: Videojuego arcade de Pong musical interactivo con transformaciones entre 8 dimensiones, combos rítmicos, power-ups y sintetizador Web Audio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <script defer src="./assets/index--b9GiGPz.js"></script>
+</head>
+<body>
+  <!-- Regreso al portafolio. Encima de todo: la ruta parte de dist/ -->
+  <a href="../../index.html#desarrollo" aria-label="Volver al portafolio" title="Volver al portafolio"
+     style="position:fixed;top:4px;left:4px;z-index:2147483647;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:rgba(10,10,10,.72);color:#f4f4f4">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+  </a>
+  <div id="app">
+    <!-- Game Container with Canvas -->
+    <div id="game-container">
+      <canvas id="game-canvas" width="1280" height="720"></canvas>
+
+      <!-- In-Game HUD Overlay -->
+      <div id="hud-overlay" class="hud-overlay hidden">
+        <!-- Top Bar: Scores & Match Info -->
+        <div class="hud-top">
+          <div class="hud-player hud-p1">
+            <span class="p-name" id="hud-p1-label">JUGADOR 1</span>
+            <span class="p-score" id="hud-p1-score">0</span>
+          </div>
+
+          <div class="hud-center">
+            <div class="dimension-badge" id="hud-dim-badge">
+              <span class="dim-icon">🌀</span>
+              <span class="dim-title" id="hud-dim-title">DIMENSIÓN: RETRO</span>
+            </div>
+            <!-- Progress Bar to Next Morph -->
+            <div class="morph-progress-wrap">
+              <div class="morph-progress-bar" id="hud-morph-bar"></div>
+            </div>
+            <!-- Beat Metronome / Pulse Dot -->
+            <div class="beat-indicator" id="hud-beat-dot"></div>
+          </div>
+
+          <div class="hud-player hud-p2">
+            <span class="p-score" id="hud-p2-score">0</span>
+            <span class="p-name" id="hud-p2-label">IA (NORMAL)</span>
+          </div>
+        </div>
+
+        <!-- Center Overlay for Countdown & Dynamic Alerts -->
+        <div class="hud-center-notice" id="hud-center-notice"></div>
+
+        <!-- Rhythm Precision Indicator Popup -->
+        <div class="rhythm-feedback" id="hud-rhythm-feedback"></div>
+
+        <!-- Dimension Morph Notification Banner -->
+        <div class="morph-banner" id="hud-morph-banner">
+          <div class="morph-banner-subtitle">CAMBIO DIMENSIONAL</div>
+          <div class="morph-banner-title" id="hud-morph-name">3D FUTURISTA</div>
+        </div>
+
+        <!-- Bottom Bar: Combo, Multiplier, Rhythm Bonus, Powerups & Survival Timer -->
+        <div class="hud-bottom">
+          <div class="hud-combo-card" id="hud-combo-card">
+            <div class="combo-label">COMBO</div>
+            <div class="combo-val" id="hud-combo-val">0</div>
+            <div class="multiplier-pill" id="hud-multiplier-pill">x1.0</div>
+            <div class="bonus-score">RITMO: <span id="hud-rhythm-score">0</span></div>
+          </div>
+
+          <div class="hud-active-powerups" id="hud-active-powerups">
+            <!-- Dynamic power-up badges inserted here -->
+          </div>
+
+          <div class="hud-mode-info" id="hud-mode-info">
+            <div class="mode-tag" id="hud-mode-tag">CLÁSICO</div>
+            <div class="survival-time hidden" id="hud-survival-time">00:00.00</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="touch-pause hidden" id="btn-touch-pause" type="button" aria-label="Pausar">❚❚</button>
+
+      <!-- Menus & Overlays Screen Container -->
+      <div id="ui-layer" class="ui-layer">
+        
+        <!-- MAIN MENU -->
+        <div id="screen-main-menu" class="menu-screen active">
+          <div class="menu-glass-panel">
+            <div class="title-logo-wrap">
+              <h1 class="game-logo">MUSIC <span class="logo-accent">PONG</span></h1>
+              <p class="game-tagline">ARCADE MUSICAL MULTIDIMENSIONAL</p>
+            </div>
+
+            <div class="menu-nav-buttons">
+              <button class="arcade-btn primary" id="btn-play-1p">
+                <span class="btn-icon">⚡</span> 1 JUGADOR (VS IA)
+              </button>
+              <button class="arcade-btn" id="btn-play-2p">
+                <span class="btn-icon">👥</span> 2 JUGADORES (LOCAL)
+              </button>
+              <button class="arcade-btn" id="btn-modes">
+                <span class="btn-icon">🎮</span> MODOS DE JUEGO
+              </button>
+              <button class="arcade-btn" id="btn-options">
+                <span class="btn-icon">⚙️</span> OPCIONES
+              </button>
+              <button class="arcade-btn" id="btn-controls">
+                <span class="btn-icon">🕹️</span> CONTROLES
+              </button>
+            </div>
+
+            <div class="menu-footer">
+              <span>8 DIMENSIONES • AUDIO REACTIVO • CHIPTUNE SYNTH</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODES SELECTION SCREEN -->
+        <div id="screen-modes" class="menu-screen hidden">
+          <div class="menu-glass-panel wide">
+            <h2 class="screen-title">SELECCIÓN DE MODO</h2>
+            
+            <div class="modes-grid">
+              <div class="mode-card selected" data-mode="classic" id="card-mode-classic">
+                <div class="mode-badge">EQUILIBRADO</div>
+                <h3>MODO CLÁSICO</h3>
+                <p>Reglas esenciales de Pong con música reactiva, combos rítmicos, power-ups y rotación de 8 dimensiones.</p>
+                <div class="mode-meta">Meta: Primer jugador en llegar a 7 puntos.</div>
+              </div>
+
+              <div class="mode-card" data-mode="rhythm" id="card-mode-rhythm">
+                <div class="mode-badge accent-pink">MÁXIMA PRECISIÓN</div>
+                <h3>MODO RITMO</h3>
+                <p>Enfatiza el timing musical estricto. Golpes perfectos multiplican la bonificación; los golpes fuera de tiempo penalizan el combo.</p>
+                <div class="mode-meta">Meta: Puntuación récord por precisión rítmica.</div>
+              </div>
+
+              <div class="mode-card" data-mode="survival" id="card-mode-survival">
+                <div class="mode-badge accent-cyan">ALTA VELOCIDAD</div>
+                <h3>SUPERVIVENCIA</h3>
+                <p>La pelota acelera continuamente. ¡Sobrevive el mayor tiempo posible! La partida termina al primer fallo.</p>
+                <div class="mode-meta">Meta: Cronómetro de tiempo máximo.</div>
+              </div>
+            </div>
+
+            <div class="match-setup-row">
+              <div class="setup-group">
+                <label for="select-difficulty">DIFICULTAD IA:</label>
+                <select id="select-difficulty" class="arcade-select">
+                  <option value="easy">Fácil</option>
+                  <option value="normal" selected>Normal</option>
+                  <option value="hard">Difícil</option>
+                </select>
+              </div>
+
+              <div class="setup-group">
+                <label for="select-score-limit">PUNTOS DE VICTORIA:</label>
+                <select id="select-score-limit" class="arcade-select">
+                  <option value="5">5 Puntos</option>
+                  <option value="7" selected>7 Puntos</option>
+                  <option value="11">11 Puntos</option>
+                  <option value="15">15 Puntos</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="screen-actions">
+              <button class="arcade-btn" id="btn-modes-back">VOLVER</button>
+              <button class="arcade-btn primary" id="btn-modes-start">INICIAR PARTIDA</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- OPTIONS SCREEN -->
+        <div id="screen-options" class="menu-screen hidden">
+          <div class="menu-glass-panel">
+            <h2 class="screen-title">OPCIONES DE AUDIO Y JUEGO</h2>
+            
+            <div class="options-list">
+              <div class="option-row">
+                <label for="slider-master-volume">VOLUMEN MASTER</label>
+                <div class="slider-val-wrap">
+                  <input type="range" id="slider-master-volume" min="0" max="100" value="80" class="arcade-slider" />
+                  <span id="label-master-volume" class="slider-val">80%</span>
+                </div>
+              </div>
+
+              <div class="option-row">
+                <label for="slider-music-volume">VOLUMEN MÚSICA</label>
+                <div class="slider-val-wrap">
+                  <input type="range" id="slider-music-volume" min="0" max="100" value="80" class="arcade-slider" />
+                  <span id="label-music-volume" class="slider-val">80%</span>
+                </div>
+              </div>
+
+              <div class="option-row">
+                <label for="slider-sfx-volume">VOLUMEN EFECTOS (SFX)</label>
+                <div class="slider-val-wrap">
+                  <input type="range" id="slider-sfx-volume" min="0" max="100" value="90" class="arcade-slider" />
+                  <span id="label-sfx-volume" class="slider-val">90%</span>
+                </div>
+              </div>
+
+              <div class="option-row">
+                <label for="toggle-mute">SILENCIAR TODO</label>
+                <input type="checkbox" id="toggle-mute" class="arcade-checkbox" />
+              </div>
+            </div>
+
+            <div class="screen-actions">
+              <button class="arcade-btn primary" id="btn-options-back">GUARDAR Y VOLVER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTROLS SCREEN -->
+        <div id="screen-controls" class="menu-screen hidden">
+          <div class="menu-glass-panel">
+            <h2 class="screen-title">CONTROLES DE JUEGO</h2>
+
+            <div class="controls-guide">
+              <div class="control-box">
+                <div class="control-box-title">JUGADOR 1 (IZQUIERDA)</div>
+                <div class="key-bind"><kbd>W</kbd> <span>Mover Arriba</span></div>
+                <div class="key-bind"><kbd>S</kbd> <span>Mover Abajo</span></div>
+                <div class="key-bind"><kbd>↑</kbd> <kbd>↓</kbd> <span>También en 1 jugador</span></div>
+                <div class="key-bind"><kbd>Ratón</kbd> <span>1 jugador: mover</span></div>
+              </div>
+
+              <div class="control-box">
+                <div class="control-box-title">JUGADOR 2 (DERECHA / LOCAL)</div>
+                <div class="key-bind"><kbd>↑</kbd> <span>Mover Arriba</span></div>
+                <div class="key-bind"><kbd>↓</kbd> <span>Mover Abajo</span></div>
+              </div>
+
+              <div class="control-box">
+                <div class="control-box-title">SISTEMA</div>
+                <div class="key-bind"><kbd>ESC</kbd> <span>Pausar / Reanudar</span></div>
+                <div class="key-bind"><kbd>ENTER</kbd> <span>Confirmar / Iniciar</span></div>
+                <div class="key-bind"><kbd>Táctil</kbd> <span>Arrastra; en 2 jugadores, cada uno su mitad</span></div>
+              </div>
+            </div>
+
+            <div class="screen-actions">
+              <button class="arcade-btn primary" id="btn-controls-back">ENTENDIDO</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAUSE MODAL -->
+        <div id="screen-pause" class="menu-screen hidden">
+          <div class="menu-glass-panel">
+            <h2 class="screen-title pause-title">JUEGO EN PAUSA</h2>
+            
+            <div class="menu-nav-buttons">
+              <button class="arcade-btn primary" id="btn-pause-resume">
+                <span class="btn-icon">▶</span> CONTINUAR
+              </button>
+              <button class="arcade-btn" id="btn-pause-restart">
+                <span class="btn-icon">🔄</span> REINICIAR PARTIDA
+              </button>
+              <button class="arcade-btn" id="btn-pause-options">
+                <span class="btn-icon">⚙️</span> AJUSTES
+              </button>
+              <button class="arcade-btn danger" id="btn-pause-quit">
+                <span class="btn-icon">🚪</span> SALIR AL MENÚ
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- GAME OVER SCREEN -->
+        <div id="screen-game-over" class="menu-screen hidden">
+          <div class="menu-glass-panel wide">
+            <div class="game-over-header">
+              <div class="winner-badge" id="go-winner-badge">¡VICTORIA!</div>
+              <h2 class="game-over-title" id="go-winner-title">JUGADOR 1 GANA</h2>
+            </div>
+
+            <div class="stats-summary-grid">
+              <div class="stat-card">
+                <span class="stat-num" id="go-score">7 - 3</span>
+                <span class="stat-desc">Marcador Final</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num" id="go-max-combo">14</span>
+                <span class="stat-desc">Combo Máximo</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num" id="go-perfect-hits">82%</span>
+                <span class="stat-desc">Precisión Rítmica</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-num" id="go-rhythm-bonus">4,250</span>
+                <span class="stat-desc">Puntos Rítmicos</span>
+              </div>
+              <div class="stat-card" id="go-survival-card" style="display: none;">
+                <span class="stat-num" id="go-survival-time-val">01:45.32</span>
+                <span class="stat-desc">Tiempo de Supervivencia</span>
+              </div>
+            </div>
+
+            <div class="screen-actions">
+              <button class="arcade-btn primary" id="btn-go-rematch">
+                <span class="btn-icon">⚡</span> REVANCHA
+              </button>
+              <button class="arcade-btn" id="btn-go-menu">
+                <span class="btn-icon">🏠</span> MENÚ PRINCIPAL
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

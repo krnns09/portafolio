@@ -36,12 +36,13 @@ const KEPRO = {
     { num: "02", label: "Herramientas", id: "herramientas" },
     { num: "03", label: "Edición",     id: "edicion"     },
     { num: "04", label: "Desarrollo",  id: "desarrollo"  },
-    { num: "05", label: "IA",          id: "ia"          }
+    { num: "05", label: "Modelado 3D", id: "modelado"    },
+    { num: "06", label: "IA",          id: "ia"          }
   ],
 
   /* Páginas propias del sitio (fuera del scroll del índice) */
   pages: [
-    { id: "contacto-page", num: "06", label: "Contacto", href: "contacto.html", cta: true }
+    { id: "contacto-page", num: "07", label: "Contacto", href: "contacto.html", cta: true }
   ],
 
   /* ------------------------------------------- 01 — Portada */
@@ -209,6 +210,50 @@ const KEPRO = {
         image: "imagenes/web/nucleo-fundido-800.webp",
         alt: "Vista en primera persona de unas manos de magma frente a un bombero en una casa",
         href: "Juego3D/dist/index.html"
+      },
+      {
+        id: "gm-04",
+        title: "MUSIC PONG",
+        description: "Pong musical con banda sonora generada en vivo: golpear al ritmo " +
+          "encadena combos. Contra la IA o dos jugadores, con teclado, ratón o táctil.",
+        plot: "La partida late a 128 pulsos por minuto y, cada pocos compases, la arena " +
+          "salta a otra de sus ocho dimensiones: del arcade retro al bioma alien, el " +
+          "pixel art o el glitch. Cada una cambia cómo se mueve y rebota la pelota.",
+        tools: ["TypeScript", "Canvas 2D", "Web Audio"],
+        image: "imagenes/web/music-pong-800.webp",
+        alt: "Partida de Music Pong en la dimensión 3D futurista, con una rejilla de neón",
+        href: "Music%20Pong/dist/index.html"
+      }
+    ],
+    /* Cámara y WebXR exigen HTTPS al publicarse; los dos se juegan también sin ellas. */
+    ar: [
+      {
+        id: "ar-01",
+        title: "ÓRBITA",
+        description: "Minijuego espacial en A-Frame con cursor virtual (Raycaster): se apunta " +
+          "con la mirada, el móvil o el ratón y se dispara sosteniendo la mira. En AR, los " +
+          "asteroides llegan a tu propia habitación.",
+        plot: "Una estación queda a la deriva junto a un planeta anillado y sus escudos sólo " +
+          "aguantan tres impactos. Resiste sesenta segundos: destruye los asteroides, atrapa " +
+          "cristales antes de que se apaguen y recupera energía.",
+        tools: ["A-Frame", "WebXR", "Raycaster"],
+        image: "imagenes/web/orbita-800.webp",
+        alt: "Retícula apuntando a asteroides y cristales frente a un planeta con anillo",
+        href: "realidad-aumentada/index.html"
+      },
+      {
+        id: "ar-02",
+        title: "THUMB WARS",
+        description: "Guerra de pulgares en realidad aumentada: la cámara reconoce las manos y " +
+          "da rostro y armadura a cada pulgar. En móvil o con webcam y, sin cámara, con " +
+          "teclado contra la CPU o entre dos.",
+        plot: "El reino azul del hielo y el reino rojo del fuego resuelven sus disputas pulgar " +
+          "contra pulgar. Domina al rival durante tres segundos para sumar un punto: gana " +
+          "quien se lleve dos de tres rondas.",
+        tools: ["JavaScript", "MediaPipe", "Canvas 2D"],
+        image: "imagenes/web/thumb-wars-800.webp",
+        alt: "Dos manos entrelazadas: el pulgar azul atrapa al rojo mientras corre la cuenta atrás",
+        href: "Thum%20Wars/dist/index.html"
       }
     ],
     sites: [
@@ -230,7 +275,44 @@ const KEPRO = {
     ]
   },
 
-  /* --------------------------------- 05 — Generación con IA */
+  /* ------------------------------------ 05 — Modelado 3D */
+  model: {
+    subtitle: "Ruinas flotantes de Raíz",
+    description: "Escenario de ruinas suspendidas con tres personajes rigueados, cada uno " +
+      "con su hero prop y su ciclo de animación de 60 frames. Modelado, texturizado y " +
+      "optimizado para correr a 60 FPS en el navegador.",
+    poster: "trabajos/3d/poster.jpg",
+    alt: "Ruinas de piedra flotando sobre un bosque con niebla al atardecer",
+    /* El visor se compila en visor3d/ y sólo se descarga al llegar a la sección.
+       local es la copia en base64 para cuando se abre con doble clic. */
+    viewer: {
+      script: "visor3d/dist/visor.js",
+      local: "visor3d/dist/copia-local.js",
+      modelo: "trabajos/3d/microescena.glb",
+      fondo: "trabajos/3d/fondo.webp",
+      dracoJs: "visor3d/dist/draco/draco_wasm_wrapper.js",
+      dracoWasm: "visor3d/dist/draco/draco_decoder.wasm",
+      camara: { posicion: [15, 8, 15], objetivo: [0, 1.2, 0], fov: 45 },
+      clips: ["CICLO_Personaje1_caminar", "CICLO_Robot_caminar", "CICLO_Villano_alzarse"]
+    },
+    stats: [
+      { k: "Triángulos",           v: "128.388" },
+      { k: "Draw calls",           v: "18" },
+      { k: "Peso del GLB",         v: "4,04 MB" },
+      { k: "Personajes rigueados", v: "3" },
+      { k: "Huesos",               v: "41 / 41 / 12" },
+      { k: "Animación",            v: "60 frames a 24 fps" }
+    ],
+    process: [
+      "Escenario modelado por geometría generativa y horneado a normal map de 2048×2048",
+      "Personajes retopologizados y animados desde capturas de movimiento",
+      "Rig con nomenclatura .L/.R y pesos automáticos",
+      "Props emparentados al hueso de la mano para que no se deformen",
+      "Exportado a glTF con compresión Draco y texturas WebP"
+    ]
+  },
+
+  /* --------------------------------- 06 — Generación con IA */
   ai: {
     /* web/ guarda las portadas y las copias en H.264: los originales vienen en HEVC. */
     videos: [
