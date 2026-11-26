@@ -280,9 +280,9 @@ const KEPRO = {
     subtitle: "Ruinas flotantes de Raíz",
     description: "Escenario de ruinas suspendidas con tres personajes rigueados, cada uno " +
       "con su hero prop y su ciclo de animación de 60 frames. Modelado, texturizado y " +
-      "optimizado para correr a 60 FPS en el navegador.",
+      "optimizado para correr en el navegador.",
     poster: "trabajos/3d/poster.jpg",
-    alt: "Ruinas de piedra flotando sobre un bosque con niebla al atardecer",
+    alt: "Noa y el robot Spidy de espaldas entre columnas, y el villano Zarmad bajo el arco de piedra",
     /* El visor se compila en visor3d/ y sólo se descarga al llegar a la sección.
        local es la copia en base64 para cuando se abre con doble clic. */
     viewer: {
@@ -292,13 +292,13 @@ const KEPRO = {
       fondo: "trabajos/3d/fondo.webp",
       dracoJs: "visor3d/dist/draco/draco_wasm_wrapper.js",
       dracoWasm: "visor3d/dist/draco/draco_decoder.wasm",
-      camara: { posicion: [15, 8, 15], objetivo: [0, 1.2, 0], fov: 45 },
+      camara: { posicion: [2.32, 1.75, -2.94], objetivo: [-1.25, 0.95, -0.2], fov: 35 },
       clips: ["CICLO_Personaje1_caminar", "CICLO_Robot_caminar", "CICLO_Villano_alzarse"]
     },
     stats: [
-      { k: "Triángulos",           v: "128.388" },
+      { k: "Triángulos",           v: "87.034" },
       { k: "Draw calls",           v: "18" },
-      { k: "Peso del GLB",         v: "4,04 MB" },
+      { k: "Peso del GLB",         v: "5,06 MB" },
       { k: "Personajes rigueados", v: "3" },
       { k: "Huesos",               v: "41 / 41 / 12" },
       { k: "Animación",            v: "60 frames a 24 fps" }
@@ -308,6 +308,7 @@ const KEPRO = {
       "Personajes retopologizados y animados desde capturas de movimiento",
       "Rig con nomenclatura .L/.R y pesos automáticos",
       "Props emparentados al hueso de la mano para que no se deformen",
+      "Roca inferior diezmada al 22%: 41.000 triángulos liberados para textura",
       "Exportado a glTF con compresión Draco y texturas WebP"
     ]
   },

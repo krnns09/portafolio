@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raíz · verificación en tiempo real</title>
+<style>
+  :root{
+    --fondo:#151c26; --panel:rgba(10,14,20,.74); --borde:rgba(150,180,220,.28);
+    --texto:#dfe7f2; --tenue:#8aa0bb; --dato:#8fd4ff; --bien:#7df2a8; --mal:#ff9b8a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--fondo);overflow:hidden;
+    color:var(--texto);font-family:ui-monospace,"DejaVu Sans Mono",Menlo,Consolas,monospace}
+  canvas{display:block}
+  .panel{position:fixed;background:var(--panel);border:1px solid var(--borde);
+    border-radius:12px;padding:18px 22px;backdrop-filter:blur(6px)}
+  #hud{left:24px;top:22px;font-size:14px;line-height:1.8;letter-spacing:.2px}
+  #hud .rotulo{color:var(--tenue);font-size:11px;letter-spacing:2.4px;margin-bottom:10px}
+  #hud .fps{font-size:34px;line-height:1.05;margin:2px 0 4px;color:var(--bien)}
+  #hud .fps.bajo{color:var(--mal)}
+  #hud .minimo{color:var(--tenue);font-size:12px;margin-bottom:12px}
+  #hud b{color:var(--dato);font-weight:600}
+  #ayuda{right:24px;bottom:22px;font-size:12px;line-height:1.9;color:var(--tenue);
+    max-width:330px}
+  #ayuda kbd{background:rgba(150,180,220,.16);border:1px solid var(--borde);
+    border-radius:5px;padding:1px 7px;color:var(--texto);font:inherit;font-size:11px}
+  #carga{position:fixed;inset:0;display:grid;place-content:center;gap:14px;
+    text-align:center;background:var(--fondo);transition:opacity .5s}
+  #carga .barra{width:280px;height:3px;background:rgba(150,180,220,.2);border-radius:2px;
+    overflow:hidden;margin:0 auto}
+  #carga .barra i{display:block;height:100%;width:0;background:var(--dato);
+    transition:width .25s}
+  .oculto{opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div id="carga">
+  <div style="color:var(--tenue);font-size:11px;letter-spacing:2.4px">CARGANDO LA ESCENA</div>
+  <div class="barra"><i id="progreso"></i></div>
+  <div id="estado" style="color:var(--tenue);font-size:12px">descargando el modelo…</div>
+</div>
+
+<div class="panel" id="hud">
+  <div class="rotulo">VERIFICACIÓN EN TIEMPO REAL</div>
+  <div class="fps"><span id="fps">--</span> FPS</div>
+  <div class="minimo">mínimo en los últimos 10 s: <span id="min">--</span></div>
+  <div>Draw calls <b id="dc">--</b></div>
+  <div>Triángulos <b id="tri">--</b></div>
+  <div>Texturas <b id="tex">--</b> · Programas <b id="prg">--</b></div>
+  <div>Resolución <b id="res">--</b></div>
+  <div>Clips en reproducción <b id="clips">--</b></div>
+  <div style="color:var(--tenue);font-size:11px;margin-top:10px" id="gpu">—</div>
+</div>
+
+<div class="panel" id="ayuda">
+  <kbd>1</kbd>…<kbd>5</kbd> encuadres fijos · arrastrar para orbitar<br>
+  <kbd>H</kbd> esconder este recuadro antes de la captura<br>
+  <kbd>R</kbd> reiniciar el contador de mínimos<br>
+  Deja correr unos segundos antes de capturar, para que el mínimo sea real.
+</div>
+
+<script type="importmap">
+{"imports":{
+  "three":"https://unpkg.com/three@0.170.0/build/three.module.js",
+  "three/addons/":"https://unpkg.com/three@0.170.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+
+const MODELO = './microescena.glb';
+
+const ren = new THREE.WebGLRenderer({antialias:true, powerPreference:'high-performance'});
+ren.setPixelRatio(Math.min(devicePixelRatio, 2));
+ren.setSize(innerWidth, innerHeight);
+ren.outputColorSpace = THREE.SRGBColorSpace;
+ren.toneMapping = THREE.ACESFilmicToneMapping;
+ren.toneMappingExposure = 1.15;
+document.body.appendChild(ren.domElement);
+
+// qué tarjeta está dibujando: sin esto el número de FPS no significa nada
+try{
+  const gl = ren.getContext();
+  const d = gl.getExtension('WEBGL_debug_renderer_info');
+  document.getElementById('gpu').textContent =
+    d ? gl.getParameter(d.UNMASKED_RENDERER_WEBGL) : 'WebGL2';
+}catch(e){}
+
+const esc = new THREE.Scene();
+esc.background = new THREE.Color(0x1b2430);
+const cam = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 400);
+const ctr = new OrbitControls(cam, ren.domElement);
+ctr.enableDamping = true;
+ctr.autoRotate = false;        // la escena se queda quieta
+ctr.minDistance = 2.0;
+ctr.maxDistance = 22.0;
+ctr.maxPolarAngle = Math.PI * 0.49;   // no se puede mirar la isla desde abajo
+
+esc.add(new THREE.HemisphereLight(0xb9ccff, 0x6b6356, 0.9));
+const key = new THREE.DirectionalLight(0xfff2e0, 2.2); key.position.set(12,14,8);
+const fill = new THREE.DirectionalLight(0x9ec0ff, 0.6); fill.position.set(-10,6,-12);
+esc.add(key, fill);
+
+// Blender (x,y,z) -> three.js (x, z, -y). El primero es el encuadre
+// principal: 35 mm a 4,5 m, con Noa y Spidy delante y Zarmad bajo el arco.
+const ENCUADRES = [
+  [[2.32, 1.75, -2.94],  [-1.25, 0.95, -0.20]],
+  [[1.44, 1.90, -4.42],  [-1.25, 0.95, -0.20]],
+  [[2.68, 1.70,  0.19],  [-2.89, 1.10,  0.01]],
+  [[-5.2, 2.60,  3.80],  [ 0.38, 0.95, -0.42]],
+  [[ 6.0, 7.00,  7.00],  [-1.00, 0.60,  0.00]],
+];
+function encuadre(i){
+  const [p,o] = ENCUADRES[i];
+  cam.position.set(...p); ctr.target.set(...o); ctr.update();
+}
+encuadre(0);
+
+const draco = new DRACOLoader()
+  .setDecoderPath('https://unpkg.com/three@0.170.0/examples/jsm/libs/draco/gltf/');
+const cargador = new GLTFLoader().setDRACOLoader(draco);
+
+let mezclador = null;
+const reloj = new THREE.Clock();
+const $ = id => document.getElementById(id);
+
+cargador.load(MODELO, g => {
+  esc.add(g.scene);
+  mezclador = new THREE.AnimationMixer(g.scene);
+  g.animations.forEach(c => mezclador.clipAction(c).play());
+  let tri = 0;
+  g.scene.traverse(o => {
+    if (o.isMesh && o.geometry){
+      const i = o.geometry.index;
+      tri += (i ? i.count : o.geometry.attributes.position.count) / 3;
+    }
+  });
+  $('tri').textContent = Math.round(tri).toLocaleString('es');
+  $('clips').textContent = g.animations.length;
+  $('carga').classList.add('oculto');
+}, ev => {
+  if (ev.lengthComputable){
+    const p = ev.loaded / ev.total;
+    $('progreso').style.width = (p*100).toFixed(0) + '%';
+    $('estado').textContent =
+      `${(ev.loaded/1e6).toFixed(1)} de ${(ev.total/1e6).toFixed(1)} MB`;
+  }
+}, err => {
+  $('estado').innerHTML =
+    'No se pudo cargar <code>microescena.glb</code>.<br>' +
+    'Tiene que estar en la misma carpeta que este archivo,<br>' +
+    'y la página servida por http, no abierta con doble clic.';
+  console.error(err);
+});
+
+addEventListener('resize', () => {
+  cam.aspect = innerWidth/innerHeight; cam.updateProjectionMatrix();
+  ren.setSize(innerWidth, innerHeight);
+});
+addEventListener('keydown', e => {
+  const n = parseInt(e.key, 10);
+  if (n >= 1 && n <= ENCUADRES.length) encuadre(n-1);
+  if (e.key.toLowerCase() === 'h') $('ayuda').classList.toggle('oculto');
+  if (e.key.toLowerCase() === 'r') { marcas.length = 0; minimo = Infinity; }
+});
+
+let marcas = [], minimo = Infinity, cuenta = 0;
+function bucle(){
+  requestAnimationFrame(bucle);
+  const t = performance.now();
+  marcas.push(t);
+  while (marcas.length && t - marcas[0] > 1000) marcas.shift();
+  ctr.update();
+  if (mezclador) mezclador.update(reloj.getDelta());
+  ren.render(esc, cam);
+  if (++cuenta % 10 === 0){
+    const fps = marcas.length;
+    if (cuenta > 120 && fps > 0) minimo = Math.min(minimo, fps);
+    const e = $('fps');
+    e.textContent = fps;
+    e.parentElement.classList.toggle('bajo', fps < 55);
+    $('min').textContent = minimo === Infinity ? '--' : minimo;
+    const i = ren.info;
+    $('dc').textContent = i.render.calls;
+    $('tex').textContent = i.memory.textures;
+    $('prg').textContent = i.programs ? i.programs.length : 0;
+    $('res').textContent = `${ren.domElement.width}×${ren.domElement.height}`;
+  }
+}
+bucle();
+</script>
+</body>
+</html>

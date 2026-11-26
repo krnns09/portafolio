@@ -158,7 +158,7 @@ const KP = (function () {
   function modelViewer(model) {
     return (
       '<img class="viewer__poster" src="' + esc(model.poster) + '" alt="' + esc(model.alt) + '" ' +
-        'width="1380" height="776" loading="lazy" decoding="async">' +
+        'width="1600" height="900" loading="lazy" decoding="async">' +
       '<div class="viewer__canvas" data-viewer-canvas></div>' +
       '<div class="viewer__progress" aria-hidden="true">' +
         '<span class="viewer__bar"></span>' +
